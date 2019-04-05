@@ -25,11 +25,13 @@ def CheckLength(input)
   end
 end
 
-fileinputs = Array.new
+fileinputs = []
+LegalExtensions = ['mov', 'mkv','dv']
 $input = ARGV[0]
 if File.directory?($input)
-  targets = Dir["#{$input}/**/*.mkv"]
-  targets.each do |file|
+  targets = []
+  LegalExtensions.each { |extension| targets << Dir["#{$input}/**/*.#{extension}"] }
+  targets.flatten.each do |file|
     fileinputs << file
   end
 else
@@ -37,18 +39,19 @@ else
   exit
 end
 
-$write_to_csv = Array.new
+$write_to_csv = []
+puts fileinputs
 
 fileinputs.each do |fileinput|
   CheckSizemkv(fileinput)
   CheckSizemp4(fileinput)
   CheckLength(fileinput)
-  @csvline = File.basename(fileinput , ".mkv") + ',' + @file_sizegb + ',' + @mp4_sizemb + "," + @input_length
+  @csvline = File.basename(fileinput , ".*") + ',' + @file_sizegb + ',' + @mp4_sizemb + "," + @input_length
   $write_to_csv << @csvline
 end
 
 File.open(File.expand_path('~/Desktop/Ari.csv'), 'w') do |f|
-  f.puts "Name,MKV(gB),MP4(mb),DURATION"
+  f.puts "Name,Master File(gB),MP4(mb),DURATION"
    $write_to_csv.each do |line|
      f.puts(line)
    end
