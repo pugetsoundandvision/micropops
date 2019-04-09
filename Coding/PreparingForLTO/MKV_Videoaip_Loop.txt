@@ -1,0 +1,4 @@
+find [DIR] -iname "*.mkv"
+while read TARGET
+do videoaip -l auto "$TARGET" </dev/null
+done < <(find [DIR] -name '*.mkv')

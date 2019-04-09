@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ffmpeg -i Copy_1432.mkv -ss 00:00:00 -t 00:10:44 -acodec copy -vcodec copy Copy_1432_TRIM.mkv;
+
+ffmpeg -i Copy_1452.mkv -ss 00:00:00 -t 00:26:53 -acodec copy -vcodec copy Copy_1452_TRIM.mkv;
+
+ffmpeg -i Copy_1456.mkv -ss 00:00:00 -t 00:06:47 -acodec copy -vcodec copy Copy_1456_TRIM.mkv;
+
+ffmpeg -i Copy_1471.mkv -ss 00:00:00 -t 00:05:28 -acodec copy -vcodec copy Copy_1471_TRIM.mkv;
+
+ffmpeg -i Copy_1475.mkv -ss 00:00:00 -t 00:05:47 -acodec copy -vcodec copy Copy_1475_TRIM.mkv;
+
+ffmpeg -i filmarch_786_816.mov -ss 00:20:56 -t 00:09:16 -acodec copy -vcodec copy filmarch_787_NEW.mov
+
+done
+
+ffmpeg -i Byrd_14.mkv -ss 00:00:00 -t 00:18:06 -acodec copy -vcodec copy Byrd_14_TRIM.mkv
+
+ffmpeg -i /Users/mipopsmac2/Desktop/PIs/UWEA/2005-1.1596/2005-1.1596_pt2.mkv -ss 00:00:49 -t 00:27:00 -acodec copy -vcodec copy /Users/mipopsmac2/Desktop/PIs/UWEA/2005-1.1596/2005-1.1596_pt2_trimmed.mkv

@@ -1,0 +1,30 @@
+Usage: bag <operation> [operation arguments] [--help]
+Parameters:
+	<operation>
+		Valid operations are: baginplace, checkpayloadoxum, create, fillholey, generatepayloadoxum, makecomplete, makeholey, retrieve, splitbagbyfiletype, splitbagbysize, splitbagbysizeandfiletype, update, updatepayloadoxum, updatetagmanifests, verifycomplete, verifypayloadmanifests, verifytagmanifests and verifyvalid.
+		Operation explanations: 
+			baginplace: Creates a bag-in-place.  The source must be a directory on a filesystem and may already have a data directory.
+			checkpayloadoxum: Generates Payload-Oxum and checks against Payload-Oxum in bag-info.txt.
+			create: Creates a bag from supplied files/directories, completes the bag, and then writes in a specified format.
+			fillholey: Retrieves any missing pieces of a local bag.
+			generatepayloadoxum: Generates and returns the Payload-Oxum for the bag.
+			makecomplete: Completes a bag and then writes in a specified format.  Completing a bag fills in any missing parts.
+			makeholey: Generates a fetch.txt and then writes bag in a specified format.
+			retrieve: Retrieves a bag exposed by a web server. A local holey bag is not required.
+			splitbagbyfiletype: Splits a bag by file types.
+			splitbagbysize: Splits a bag by size.
+			splitbagbysizeandfiletype: Splits a bag by size and file types.
+			update: Updates the manifests and (if it exists) the bag-info.txt for a bag.
+			updatepayloadoxum: Generates and updates the Payload-Oxum in the bag-info.txt.  The bag must be unserialized.
+			updatetagmanifests: Updates the tag manifests for a bag.  The bag must be unserialized.
+			verifycomplete: Verifies the completeness of a bag.
+			verifypayloadmanifests: Verifies the checksums in all payload manifests.
+			verifytagmanifests: Verifies the checksums in all tag manifests.
+			verifyvalid: Verifies the validity of a bag.
+	[--version]
+		Prints version of BIL and exits.
+	[--help]
+		Prints usage message for the operation.
+Examples:
+	bag verifyvalid --help
+		Prints help for the verifyvalid operation.

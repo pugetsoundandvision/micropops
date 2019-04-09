@@ -1,0 +1,3 @@
+--- To generate a list of all the .MKVs in a defined directory, and exclude hidden files
+
+find [DIR] -iname "*.mkv" -not -path "*._*"
