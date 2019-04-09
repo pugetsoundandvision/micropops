@@ -21,7 +21,7 @@ while read TARGET
 do rsync -av "$TARGET" /Users/mipopsmac2/Desktop/NAS_Fake_1 </dev/null
 done < <(find mipopsmac1@10.5.65.121:/Users/mipopsmac1/Desktop/PIs/*/* -type d -mmin -480)
 
-find /Users/mipopsmac1/Desktop/PIs/*/* -type d -mmin -480 | while read TARGET | do cp "$TARGET" /Users/mipopsmac1/Desktop/LAN_TEST
+find /Users/mipopsmac1/Desktop/PIs/*/* -type d -mmin -480 | while read TARGET ; do mv -v "$TARGET" /Users/mipopsmac1/Desktop/LAN_TEST
 
 # MASTER SCRIPT
 #1) call [M1_to_M3_Expect] - this syncs m1 pi to m3

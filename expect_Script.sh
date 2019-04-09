@@ -1,6 +1,11 @@
 #!/usr/bin/expect
-
-spawn /Users/mipopsmac2/Desktop/rsync_testing.sh
+set timeout -1 
+#spawn /Users/mipopsmac2/Desktop/rsync_testing.sh
+spawn /Users/mipopsmac2/Desktop/Test_sync_timeout.sh
+expect -exact "Enter passphrase for key '/Users/mipopsmac2/.ssh/id_rsa':"
+send -- "seattle\r"
+expect -exact "Enter passphrase for key '/Users/mipopsmac2/.ssh/id_rsa':"
+send -- "seattle\r"
 expect -exact "Enter passphrase for key '/Users/mipopsmac2/.ssh/id_rsa':"
 send -- "seattle\r"
 expect eof
