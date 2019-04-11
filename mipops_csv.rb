@@ -50,7 +50,7 @@ fileinputs.each do |fileinput|
   $write_to_csv << @csvline
 end
 
-File.open(File.expand_path('~/Desktop/MediaInfo_(%m-%d-%Y).csv'), 'w') do |f|
+File.open(File.expand_path('~/Desktop/MediaInfo_.csv'), 'w') do |f|
   f.puts "Name,Master File(gB),MP4(mb),DURATION"
    $write_to_csv.each do |line|
      f.puts(line)
