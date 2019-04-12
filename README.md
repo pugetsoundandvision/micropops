@@ -1,2 +1,2 @@
-# ari_microservices
+# MIPoPS Microservices
 One liners &amp; small tools for automating workflow
