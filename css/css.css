@@ -1,0 +1,266 @@
+html, body {
+  line-height: 1.5;
+  font-size: 18px;
+  font-family: sans-serif;
+  color: #453131;
+  background-color: #ffffff;
+  margin: 0;
+  word-break: break-word;
+}
+
+.grid {
+  display: grid;
+  align-content: center;
+  grid-template-areas:
+   "header"
+   "sidebar"
+   "content"
+   "footer";
+}
+
+.header {
+  grid-area: header;
+  text-align: center;
+}
+
+.content {
+  grid-area: content;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.footer {
+  grid-area: footer;
+  text-align: center;
+}
+
+@media only screen and (max-width: 999px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "header"
+    "sidebar"
+    "content"
+    "footer";
+  }
+  code {
+    word-break: break-all;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .grid {
+    grid-gap: 1rem;
+    grid-template-columns: 25% auto;
+    grid-template-areas:
+    "header  header"
+    "sidebar content"
+    "footer  footer";
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .grid {
+    max-width: 70%;
+    margin: 0 auto;
+    grid-template-areas:
+    "header  header"
+    "sidebar content"
+    "footer  footer";
+  }
+}
+
+a {
+  color: #e27b69; /* changes the color of links */
+}
+
+a:hover {
+  color: #d4d926; /* changes the color of links when you hover over them and once they've been clicked on */
+}
+
+a:visited {
+  color: #929598; /* changes the color of visited links */
+}
+
+.license img {
+  max-width: 10em;
+  display: inline;
+}
+
+
+h1 {
+  letter-spacing: 0.1em;
+  font-size: 7vw;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin: 5px 8px 8px 8px;
+}
+
+.heading {
+  font-size: 2em;
+  margin: 6px 0px 12px 0px;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+.intro-lead {
+  font-size: 1em;
+}
+
+code {
+  padding: 2px 4px;
+  color: #e27b69; /* changes the color of the code text */
+  background-color: #ffffff; /* changes the color of the code background */
+  border-radius: 4px;
+  word-wrap: break-word;
+  max-width: 800px;
+  white-space: normal;
+  display: inline-block;
+}
+
+dd {
+  padding-left: 24px;
+}
+
+dt {
+  font-family: Arial, Helvetica, sans-serif;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: normal;
+  display: inline-block;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.sample-image {
+  margin: 0 auto;
+  margin-bottom: 18px;
+  max-width: 500px;
+  text-align: center;
+}
+
+.sample-image-small {
+  margin: 0 auto;
+  margin-bottom: 18px;
+  max-width: 250px;
+  text-align: center;
+}
+
+div {
+  color: #453131; /* CHANGES COLOR OF ALL INTERIOR TEXT, not box titles */
+}
+
+.sidebar a {
+  text-decoration: none;
+}
+
+.recipe, .contents-list {
+  color: #453131;  /* CHANGES COLOR OF BOX LABEL TEXT */  /* */
+  background-color: #ffffff; /* changes color of boxes, unexpanded */
+  padding: 14px;
+  letter-spacing: 0.05em;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  padding-left: 2.8em;
+  transition: all .5s ease-out;
+}
+
+.contents-list {
+  font-size: 0.9em;
+}
+
+nav .heading {
+  word-break: normal;
+}
+
+.recipe {
+  display: block;
+  width: 90%;
+}
+
+.recipe:hover, .contents-list:hover {
+  background-color: #88d0c7; /* changes color of receipe box when you hover over it */
+}
+
+.recipe:before {
+  content: "";
+}
+
+.contents-list:before {
+  content: "";
+}
+
+.recipe:before, .contents-list:before {
+  position: absolute;
+  left: 1em;
+  padding-right: 1em;
+}
+
+.recipe:hover:before, .recipe:focus:before, .recipe:active:before {
+  transform: scale(1.5) translateX(0.1em);
+  transition: 0.5s;
+}
+
+.contents-list:hover:before, .contents-list:focus:before, .contents-list:active:before {
+  transform: scale(1.8) translateX(0.3em);
+  transition: 0.5s;
+}
+
+.codeblock {
+  font-family: monospace
+  padding: 2px 4px;
+  color: #5e9789;
+  background-color: #efeced;
+  border-radius: 4px;
+}
+
+.beware {
+  font-size: 150%;
+}
+
+.footnote {
+  font-size: 90%;
+}
+
+.well {
+  padding: 1em;
+  margin-bottom: 0.5em;
+  background-color: #dff6ef; /* changes the background color of the inside of the box */
+  border: 1px solid #030303;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+}
+
+.hiding {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+input {
+  position: absolute;
+  left: -999em;
+}
+
+input[type=checkbox]:checked + div {
+  opacity: 1;
+  height: auto;
+  overflow: hidden;
+  transition: opacity .5s linear, height .5s linear;
+}

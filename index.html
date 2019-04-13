@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ffmprovisr</title>
+  <meta name="viewport" charset="utf-8" content="text/html, width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/css.css">
+  <link rel="icon" href="img/vhs.ico">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/js.js"></script>
+</head>
+
+<body>
+<div class="grid">
+  <div class="header">
+  </div>
+
+  <nav class="sidebar well">
+    <h2 class="heading">Table of Contents</h2>
+    <a href="#about"><div class="contents-list">MIPoPS Microservices</div></a>
+    <a href="#move"><div class="contents-list">Moving Files</div></a>
+    <a href="#copy"><div class="contents-list">Copying Files</div></a>
+    <a href="#rewrap"><div class="contents-list">Change container (rewrap)</div></a>
+    <a href="#trim"><div class="contents-list">Trim a video</div></a>
+    <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
+  </nav>
+
+  <div class="content">
+    <div class="well">
+      <h2 class="heading" id="about">MIPoPS Microservices</h2>
+      <span class="intro-lead">One liners and automation tools from Moving Image Preservation of Puget Sound</span>
+      <p> <img src="img/mipopslogo.png" style="width:65%;height:65%;"></p> 
+	  <p>This page is an evolving library of some of the most common commands used for manipulating digital objects at <a href="https://mipops.org" target="_blank">Moving Image Preservation of Puget Sound</a>.</p>
+      <p>The following commands are primarily written in <a href="https://guide.bash.academy/inception/" target="_blank">bash</a>. We've also included the most common <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a> commands we use. FFmpeg is a powerful tool for manipulating audiovisual files. For an excellent, in-depth resource for using FFmpeg in the command line, check out <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank"> ffmprovsir</a>.</p>
+      <p>Contributors:<a href="hhttps://github.com/alavigne12" target="_blank"> Ari Lavigne</a>,<a href="https://github.com/libbyhopfauf" target="_blank"> Libby Hopfauf</a>,<a href="https://github.com/privatezero" target="_blank"> Andrew Weaver</a>, and everyone who contributed to the ffmprovisor project (where the ffmpeg commands presented here were sourced).</p>
+      <span class="intro-lead">License</span>
+      <p class="license">
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons License" src="img/cc.png"></a><br>
+        This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.
+      </p>
+    </div>
+
+    <div class="well">
+    <h2 id="move">Moving and Copying Files</h2>
+      <!-- Copy all access files into new directory -->
+      <label class="recipe" for="basic-structure">Copy all Access files into a new directory</label>
+      <input type="checkbox" id="basic-structure">
+      <div class="hiding">
+       <p>This is a loop script that will find all .MP4s in a directory and copy them into a new directory elsewhere. Useful for copying all access files from a directory and putting them into an Access copies folder.</p>
+	   <p>First, <code>cd</code> into the directory holding the access files you want to copy. At MIPoPS, this is usually the Participating Institutions directory.</p>
+	   <p><code>cd /MIPoPS/Desktop/PIs</code><br>
+	   <p><code>#!/bin/bash<br>while read TARGET<br>
+do rsync -av "$TARGET"  [/EXAMPLE/PATH/ACCESSFILES]<br>
+done < <(find "$PWD" -iname "*.mp4")</code></p>
+ <p>This script could be modified to look for and move other file types by modifing the input in <code>"*.mp4"</code>. Replacing that with <code>"*.dv"</code> would return all files ending in .dv. <code>"SAM_2019_*.*"</code> would move all files that have the naming convention "SAM_2019" of any file type. The asterix is a wildcard.</P>
+        </dl>
+      </div>
+      <!-- Copy all access files into a new directory -->
+
+      <!-- Move all access files into their respective directories -->
+      <label class="recipe" for="streaming-saving">Move all Access files into their respective directories</label>
+      <input type="checkbox" id="streaming-saving">
+      <div class="hiding">
+        <p>This script runs a loop that identifies all MP4s in a directory, then moves them into directories that have the same name.</p>
+		<p>At MIPoPS, this is useful for moving all access copies into their home directories..</P>
+		<p><code>cd  [EXAMPLE/PATH/TO/TARGET/DIR]</code><p>
+		<p>At MIPoPS, this would usually be: <code>cd /MIPoPS/Desktop/PIs</code></p>
+        <p><code>#!/bin/bash<br>
+for f in *.mp4; do<br>
+  [[ -f "$f" ]] || continue<br>
+  dir="${f%.*}"<br>
+  mv "$f" "$dir"<br>
+done</code></p>
+      </div>
+      <!-- Move all Access files into their respective directories -->
+    </div>
+    <div class="well">
+
+    <h2 id="copy">Copying Files</h2>
+    <!-- Codec Defaults explanation -->
+    <label class="recipe" for="codec-defaults">Codec defaults</label>
+    <input type="checkbox" id="codec-defaults">
+    <div class="hiding">
+      <h3>Codec Defaults</h3>
+      <p>Unless specified, FFmpeg will automatically set codec choices and codec parameters based off of internal defaults. These defaults are applied based on the file type used in the output (for example <code>.mov</code> or <code>.wav</code>).</p>
+      <p>When creating or transcoding files with FFmpeg, it is important to consider codec settings for both audio and video, as the default options may not be desirable in your particular context. The following is a brief list of codec defaults for some common file types:</p>
+      <ul>
+        <li><code>.avi</code>: Audio Codec: mp3, Video Codec: mpeg4</li>
+        <li><code>.mkv</code>: Audio Codec: ac3, Video Codec: h.264</li>
+        <li><code>.mov</code>: Audio Codec: aac, Video Codec: h.264</li>
+        <li><code>.mp4</code>: Audio Codec: aac, Video Codec: h.264</li>
+        <li><code>.mpg</code>: Audio Codec: mp2, Video Codec: mpeg1video</li>
+        <li><code>.mxf</code>: Audio Codec: pcm_s16le, Video Codec: mpeg2video</li>
+        <li><code>.wav</code>: Audio Codec: pcm_s16le (16 bit PCM)</li>
+      </ul>
+    </div>
+    <!-- End Codec Defaults -->
+
+    <!-- Filtergraph explanation -->
+    <label class="recipe" for="filtergraphs">Filtergraphs</label>
+    <input type="checkbox" id="filtergraphs">
+    <div class="hiding">
+      <h3>Filtergraphs</h3>
+      <p>Many FFmpeg commands use filters that manipulate the video or audio stream in some way: for example, <a href="https://ffmpeg.org/ffmpeg-filters.html#hflip" target="_blank">hflip</a> to horizontally flip a video, or <a href="https://ffmpeg.org/ffmpeg-filters.html#amerge-1" target="_blank">amerge</a> to merge two or more audio tracks into a single stream.</p>
+      <p>The use of a filter is signaled by the flag <code>-vf</code> (video filter) or <code>-af</code> (audio filter), followed by the name and options of the filter itself. For example, take the <a href="#convert-colorspace">convert colorspace</a> command:</p>
+      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -vf colormatrix=<em>src</em>:<em>dst</em> <em>output_file</em></code>
+      <p>Here, <a href="https://ffmpeg.org/ffmpeg-filters.html#colormatrix" target="_blank">colormatrix</a> is the filter used, with <em>src</em> and <em>dst</em> representing the source and destination colorspaces. This part following the <code>-vf</code> is a <strong>filtergraph</strong>.</p>
+      <p>It is also possible to apply multiple filters to an input, which are sequenced together in the filtergraph. A chained set of filters is called a filter chain, and a filtergraph may include multiple filter chains. Filters in a filterchain are separated from each other by commas (<code>,</code>), and filterchains are separated from each other by semicolons (<code>;</code>). For example, take the <a href="#inverse-telecine">inverse telecine</a> command:</p>
+      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -vf "fieldmatch,yadif,decimate" <em>output_file</em></code></p>
+      <p>Here we have a filtergraph including one filter chain, which is made up of three video filters.</p>
+      <p>It is often prudent to enclose your filtergraph in quotation marks; this means that you can use spaces within the filtergraph. Using the inverse telecine example again, the following filter commands are all valid and equivalent:</p>
+      <ul>
+        <li><code>-vf fieldmatch,yadif,decimate</code></li>
+        <li><code>-vf "fieldmatch,yadif,decimate"</code></li>
+        <li><code>-vf "fieldmatch, yadif, decimate"</code></li>
+      </ul>
+      <p>but <code>-vf fieldmatch, yadif, decimate</code> is not valid.</p>
+      <p>The ordering of the filters is significant. Video filters are applied in the order given, with the output of one filter being passed along as the input to the next filter in the chain. In the example above, <code>fieldmatch</code> reconstructs the original frames from the inverse telecined video, <code>yadif</code> deinterlaces (this is a failsafe in case any combed frames remain, for example if the source mixes telecined and real interlaced content), and <code>decimate</code> deletes duplicated frames. Clearly, it is not possible to delete duplicated frames before those frames are reconstructed.</p>
+      <h4>Notes</h4>
+      <ul>
+        <li><code>-vf</code> is an alias for <code>-filter:v</code></li>
+        <li>If the command involves more than one input or output, you must use the flag <code>-filter_complex</code> instead of <code>-vf</code>.</li>
+        <li>Straight quotation marks ("like this") rather than curved quotation marks (“like this”) should be used.</li>
+      </ul>
+      <p>For more information, check out the FFmpeg wiki <a href="https://trac.ffmpeg.org/wiki/FilteringGuide" target="_blank">Filtering Guide</a>.</p>
+      <p class="link"></p>
+    </div>
+    <!-- End Filtergraph explanation -->
+
+    <!-- Stream mapping explanation -->
+    <label class="recipe" for="stream-mapping">Stream mapping</label>
+    <input type="checkbox" id="stream-mapping">
+    <div class="hiding">
+      <h3>Stream mapping</h3>
+      <p>Stream mapping is the practice of defining which of the streams (e.g., video or audio tracks) present in an input file will be present in the output file. FFmpeg recognizes five stream types:</p>
+      <ul>
+        <li><code>a</code> - audio</li>
+        <li><code>v</code> - video</li>
+        <li><code>s</code> - subtitle</li>
+        <li><code>d</code> - data (including timecode tracks)</li>
+        <li><code>t</code> - attachment</li>
+      </ul>
+      <p>Mapping is achieved by use of the <code>-map</code> flag, followed by an action of the type <code>file_number:stream_type[:stream_number]</code>. Numbering is zero-indexed, and it's possible to map by stream type and/or overall stream order within the input file. For example:</p>
+      <ul>
+        <li><code>-map 0:v</code> means ‘take all video streams from the first input file’.</li>
+        <li><code>-map 0:3</code> means ‘take the fourth stream from the first input file’.</li>
+        <li><code>-map 0:a:2</code> means ‘take the third audio stream from the first input file’.</li>
+        <li><code>-map 0:0 -map 0:2</code> means ‘take the first and third streams from the first input file’.</li>
+        <li><code>-map 0:1 -map 1:0</code> means ‘take the second stream from the first input file and the first stream from the second input file’.</li>
+      </ul>
+      <p>To map <em>all</em> streams in the input file to the output file, use <code>-map 0</code>. However, note that not all container formats can include all stream types: for example, .mp4 cannot contain timecode.</p>
+      <p>When no mapping is specified in an ffmpeg command, the default for video files is to take just one video and one audio stream for the output: other stream types, such as timecode or subtitles, will not be copied to the output file by default. If multiple video or audio streams are present, the best quality one is automatically selected by FFmpeg.</p>
+      <p>For more information, check out the FFmpeg wiki <a href="https://trac.ffmpeg.org/wiki/Map" target="_blank">Map</a> page, and the official FFmpeg <a href="https://ffmpeg.org/ffmpeg.html#Advanced-options" target="_blank">documentation on <code>-map</code></a>.</p>
+      <p class="link"></p>
+    </div>
+    <!-- End Stream Mapping explanation -->
+
+    </div>
+    <div class="well">
+    <h2 id="rewrap">Change container (rewrap)</h2>
+
+    <!-- Basic rewrap command -->
+    <label class="recipe" for="basic-rewrap">Basic rewrap command</label>
+    <input type="checkbox" id="basic-rewrap">
+    <div class="hiding">
+      <h3>Rewrap a file</h3>
+      <p><code>ffmpeg -i <em>input_file.ext</em> -c copy -map 0 <em>output_file.ext</em></code></p>
+      <p>This script will rewrap a video file. It will create a new video video file where the inner content (the video, audio, and subtitle data) of the original file is unchanged, but these streams are rehoused within a different container format.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file.ext</em></dt><dd>path and name of the input file</dd>
+        <dt>-c copy</dt><dd>copy the streams directly, without re-encoding.</dd>
+        <dt>-map 0</dt><dd>map all streams of the input to the output.<br>
+        By default, FFmpeg will only map one stream of each type (video, audio, subtitles) to the output file. However, files may have multiple streams of a given type - for example, a video may have several audio tracks for different languages. Therefore, if you want to preserve all the streams in the original, it's necessary to use this option.</dd>
+        <dt><em>output_file.ext</em></dt><dd>path and name of the output file.<br>
+        The new container you are rewrapping to is defined by the filename extension used here, e.g. .mkv, .mp4, .mov.</dd>
+      </dl>
+	  <small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
+	  <p class="link"></p>
+    </div>
+    <!-- End Basic rewrap command -->
+    <!-- Rewrap DV -->
+    <label class="recipe" for="rewrap-dv">Rewrap DV video to .dv file</label>
+    <input type="checkbox" id="rewrap-dv">
+    <div class="hiding">
+      <h3>Rewrap DV video to .dv file</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -f rawvideo -c:v copy <em>output_file.dv</em></code></p>
+      <p>This script will take a video that is encoded in the <a href="https://en.wikipedia.org/wiki/DV" target="_blank">DV Codec</a> but wrapped in a different container (such as MOV) and rewrap it into a raw DV file (with the .dv extension). Since DV files potentially contain a great deal of provenance metadata within the DV stream, it is necessary to rewrap files in this method to avoid unintentional stripping of this metadata.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path and name of the input file</dd>
+        <dt>-f rawvideo</dt><dd>this tells FFmpeg to pass the video stream as raw video data without remuxing. This step is what ensures the survival of embedded metadata versus a standard rewrap.</dd>
+        <dt>-c:v copy</dt><dd>copy the DV stream directly, without re-encoding.</dd>
+        <dt><em>output_file.dv</em></dt><dd>tells FFmpeg to use the DV wrapper for the output.</dd>
+      </dl>
+	  <small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
+      </dl><p class="link"></p>
+    </div>
+    <!-- Rewrap DV -->
+    </div>
+    <div class="well">
+    <h2 id="trim">Trim a video</h2>
+
+    <!-- Join files of the same type together -->
+    <label class="recipe" for="join_files">Join (concatenate) two or more files of the same type</label>
+    <input type="checkbox" id="join_files">
+    <div class="hiding">
+      <h3>Join files together</h3>
+      <p><code>ffmpeg -f concat -i mylist.txt -c copy <em>output_file</em></code></p>
+      <p>This command takes two or more files of the same file type and joins them together to make a single file. All that the program needs is a text file with a list specifying the files that should be joined. However, it only works properly if the files to be combined have the exact same codec and technical specifications. Be careful, FFmpeg may appear to have successfully joined two video files with different codecs, but may only bring over the audio from the second file or have other weird behaviors. Don’t use this command for joining files with different codecs and technical specs and always preview your resulting video file!</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-f concat</dt><dd>forces ffmpeg to concatenate the files and to keep the same file format</dd>
+        <dt>-i <em>mylist.txt</em></dt><dd>path, name and extension of the input file. Per the <a href="https://ffmpeg.org/ffmpeg-formats.html#Options" target="_blank">FFmpeg documentation</a>, it is preferable to specify relative rather than absolute file paths, as allowing absolute file paths may pose a security risk.<br>
+        This text file contains the list of files to be concatenated and should be formatted as follows:
+        <pre>file '<em>./first_file.ext</em>'
+  file '<em>./second_file.ext</em>'
+  . . .
+  file '<em>./last_file.ext</em>'</pre>
+  In the above, <strong>file</strong> is simply the word "file". Straight apostrophes ('like this') rather than curved quotation marks (‘like this’) must be used to enclose the file paths.<br>
+  <strong>Note:</strong> If specifying absolute file paths in the .txt file, add <code>-safe 0</code> before the input file.<br>
+  e.g.: <code>ffmpeg -f concat -safe 0 -i mylist.txt -c copy <em>output_file</em></code></dd>
+        <dt>-c copy</dt><dd>use stream copy mode to re-mux instead of re-encode</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p>For more information, see the <a href="https://trac.ffmpeg.org/wiki/Concatenate" target="_blank">FFmpeg wiki page on concatenating files</a>.</p>
+      <p class="link"></p>
+    </div>
+    <!-- ends Join files of the same type together -->
+
+    <!-- Join files of different types together -->
+    <label class="recipe" for="join_different_files">Join (concatenate) two or more files of different types</label>
+     <input type="checkbox" id="join_different_files">
+     <div class="hiding">
+      <h3>Join files together</h3>
+      <p><code>ffmpeg -i input_1.avi -i input_2.mp4 -filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[video_out][audio_out]" -map "[video_out]" -map "[audio_out]" <em>output_file</em></code></p>
+      <p>This command takes two or more files of the different file types and joins them together to make a single file.</p>
+      <p>The input files may differ in many respects - container, codec, chroma subsampling scheme, framerate, etc. However, the above command only works properly if the files to be combined have the same dimensions (e.g., 720x576). Also note that if the input files have different framerates, then the output file will be of variable framerate.</p>
+      <p>Some aspects of the input files will be normalized: for example, if an input file contains a video track and an audio track that do not have exactly the same duration, the shorter one will be padded. In the case of a shorter video track, the last frame will be repeated in order to cover the missing video; in the case of a shorter audio track, the audio stream will be padded with silence.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_1.ext</em></dt><dd>path, name and extension of the first input file</dd>
+        <dt>-i <em>input_2.ext</em></dt><dd>path, name and extension of the second input file</dd>
+        <dt>-filter_complex</dt><dd>states that a complex filtergraph will be used</dd>
+        <dt>"</dt><dd>quotation mark to start filtergraph</dd>
+        <dt>[0:v:0][0:a:0]</dt><dd>selects the first video stream and first audio stream from the first input.<br>
+          Each reference to a specific stream is enclosed in square brackets. In the first stream reference, <code>0:v:0</code>, the first zero refers to the first input file, <code>v</code> means video stream, and the second zero indicates that it is the <em>first</em> video stream in the file that should be selected. Likewise, <code>0:a:0</code> means the first audio stream in the first input file.<br>
+          As demonstrated above, ffmpeg uses zero-indexing: <code>0</code> means the first input/stream/etc, <code>1</code> means the second input/stream/etc, and <code>4</code> would mean the fifth input/stream/etc.</dd>
+        <dt>[1:v:0][1:a:0]</dt><dd>As described above, this means select the first video and audio streams from the second input file.</dd>
+        <dt>concat=</dt><dd>starts the <code>concat</code> filter</dd>
+        <dt>n=2</dt><dd>states that there are two input files</dd>
+        <dt>:</dt><dd>separator</dd>
+        <dt>v=1</dt><dd>sets the number of output video streams.<br>
+          Note that this must be equal to the number of video streams selected from each segment.</dd>
+        <dt>:</dt><dd>separator</dd>
+        <dt>a=1</dt><dd>sets the number of output audio streams.<br>
+          Note that this must be equal to the number of audio streams selected from each segment.</dd>
+        <dt>[video_out]</dt><dd>name of the concatenated output video stream. This is a variable name which you define, so you could call it something different, like “vOut”, “outv”, or “banana”.</dd>
+        <dt>[audio_out]</dt><dd>name of the concatenated output audio stream. Again, this is a variable name which you define.</dd>
+        <dt>"</dt><dd>quotation mark to end filtergraph</dd>
+        <dt>-map "[video_out]"</dt><dd>map the concatenated video stream into the output file by referencing the variable defined above</dd>
+        <dt>-map "[audio_out]"</dt><dd>map the concatenated audio stream into the output file by referencing the variable defined above</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p>If no characteristics of the output files are specified, ffmpeg will use the default encodings associated with the given output file type. To specify the characteristics of the output stream(s), add flags after each <code>-map "[out]"</code> part of the command.</p>
+      <p>For example, to ensure that the video stream of the output file is visually lossless H.264 with a 4:2:0 chroma subsampling scheme, the command above could be amended to include the following:<br>
+        <code>-map "[video_out]" -c:v libx264 -pix_fmt yuv420p -preset veryslow -crf 18</code></p>
+      <p>Likewise, to encode the output audio stream as mp3, the command could include the following:<br>
+        <code>-map "[audio_out]" -c:a libmp3lame -dither_method modified_e_weighted -qscale:a 2</code></p>
+      <h4>Variation: concatenating files of different resolutions</h4>
+      <p>To concatenate files of different resolutions, you need to resize the videos to have matching resolutions prior to concatenation. The most basic way to do this is by using a scale filter and giving the dimensions of the file you wish to match:</p>
+      <p><code>-vf scale=1920:1080:flags=lanczos</code></p>
+      <p>(The Lanczos scaling algorithm is recommended, as it is slower but better than the default bilinear algorithm).</p>
+      <p>The rescaling should be applied just before the point where the streams to be used in the output file are listed. Select the stream you want to rescale, apply the filter, and assign that to a variable name (<code>rescaled_video</code> in the below example). Then you use this variable name in the list of streams to be concatenated.</p>
+      <p><code>ffmpeg -i input_1.avi -i input_2.mp4 -filter_complex "[0:v:0] scale=1920:1080:flags=lanczos [rescaled_video], [rescaled_video] [0:a:0] [1:v:0] [1:a:0] concat=n=2:v=1:a=1 [video_out] [audio_out]" -map "[video_out]" -map "[audio_out]" <em>output_file</em></code></p>
+      <p>However, this will only have the desired visual output if the inputs have the same aspect ratio. If you wish to concatenate an SD and an HD file, you will also wish to pillarbox the SD file while upscaling. (See the <a href="#SD_HD_2">Convert 4:3 to pillarboxed HD</a> command). The full command would look like this:</p>
+      <p><code>ffmpeg -i input_1.avi -i input_2.mp4 -filter_complex "[0:v:0] scale=1440:1080:flags=lanczos, pad=1920:1080:(ow-iw)/2:(oh-ih)/2 [to_hd_video], [to_hd_video] [0:a:0] [1:v:0] [1:a:0] concat=n=2:v=1:a=1 [video_out] [audio_out]" -map "[video_out]" -map "[audio_out]" <em>output_file</em></code></p>
+      <p>Here, the first input is an SD file which needs to be upscaled to match the second input, which is 1920x1080. The scale filter enlarges the SD input to the height of the HD frame, keeping the 4:3 aspect ratio; then, the video is pillarboxed within a 1920x1080 frame.</p>
+      <h4>Variation: concatenating files of different framerates</h4>
+      <p>If the input files have different framerates, then the output file may be of variable framerate. To explicitly obtain an output file of constant framerate, you may wish convert an input (or multiple inputs) to a different framerate prior to concatenation.</p>
+      <p>You can speed up or slow down a file using the <code>fps</code> and <code>atempo</code> filters (see also the <a href="#modify_speed">Modify speed</a> command).</p>
+      <p>Here's an example of the full command, in which input_1 is 30fps, input_2 is 25fps, and 25fps is the desired output speed.</p>
+      <p><code>ffmpeg -i input_1.avi -i input_2.mp4 -filter_complex "[0:v:0] fps=fps=25 [video_to_25fps]; [0:a:0] atempo=(25/30) [audio_to_25fps]; [video_to_25fps] [audio_to_25fps] [1:v:0] [1:a:0] concat=n=2:v=1:a=1 [video_out] [audio_out]" -map "[video_out]" -map "[audio_out]" <em>output_file</em></code></p>
+      <p>Note that the <code>fps</code> filter will drop or repeat frames as necessary in order to achieve the desired frame rate - see the FFmpeg <a href="https://ffmpeg.org/ffmpeg-filters.html#fps-1" target="_blank">fps docs</a> for more details.</p>
+      <p>For more information, see the <a href="https://trac.ffmpeg.org/wiki/Concatenate#differentcodec" target="_blank">FFmpeg wiki page on concatenating files of different types</a>.</p>
+      <p class="link"></p>
+    </div>
+    <!-- ends Join files of the different types together -->
+
+    <!-- Split file into segments -->
+    <label class="recipe" for="segment_file">Split one file into several smaller segments</label>
+    <input type="checkbox" id="segment_file">
+    <div class="hiding">
+      <h3>Split file into segments</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -c copy -map 0 -f segment -segment_time 60 -reset_timestamps 1 <em>output_file-%03d.mkv</em></code></p>
+      <dl>
+        <dt>ffmpeg</dt><dd>Starts the command.</dd>
+        <dt>-i <em>input_file</em></dt><dd>Takes in a normal file.</dd>
+        <dt>-c copy</dt><dd>Use stream copy mode to re-mux instead of re-encode.</dd>
+        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.</dd>
+        <dt>-f segment</dt><dd>Use <a href="https://ffmpeg.org/ffmpeg-formats.html#toc-segment_002c-stream_005fsegment_002c-ssegment" target="_blank">segment muxer</a> for generating the output.</dd>
+        <dt>-segment_time 60</dt><dd>Set duration of each segment (in seconds). This example creates segments with max. duration of 60s each.</dd>
+        <dt>-reset_timestamps 1</dt><dd>Reset timestamps of each segment to 0. Meant to ease the playback of the generated segments.</dd>
+        <dt><em>output_file-%03d.mkv</em></dt>
+        <dd>
+        <p>Path, name and extension of the output file.<br>
+          In order to have an incrementing number in each segment filename, FFmpeg supports <a href="http://www.cplusplus.com/reference/cstdio/printf/" target="_blank">printf-style</a> syntax for a counter.</p>
+          <p>In this example, '%03d' means: 3-digits, zero-padded<br>
+            Examples:</p>
+          <ul>
+            <li><code>%03d</code>: 000, 001, 002, ... 999</li>
+            <li><code>%05d</code>: 00000, 00001, 00002, ... 99999</li>
+            <li><code>%d</code>: 0, 1, 2, 3, 4, ... 23, 24, etc. </li>
+          </ul>
+        </dd>
+      </dl>
+      <p class="link"></p>
+    </div>
+    <!-- ends Split file into segments -->
+
+    <!-- Trim -->
+    <label class="recipe" for="trim">Trim a video</label>
+    <input type="checkbox" id="trim">
+    <div class="hiding">
+      <h3>Trim a video without re-encoding</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -ss 00:02:00 -to 00:55:00 -c copy -map 0 <em>output_file</em></code></p>
+      <p>This command allows you to create an excerpt from a file without re-encoding the audiovisual data.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>-ss 00:02:00</dt><dd>sets in point at 00:02:00</dd>
+        <dt>-to 00:55:00</dt><dd>sets out point at 00:55:00</dd>
+        <dt>-c copy</dt><dd>use stream copy mode (no re-encoding)<br>
+        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.<br>
+        <strong>Note:</strong> watch out when using <code>-ss</code> with <code>-c copy</code> if the source is encoded with an interframe codec (e.g., H.264). Since FFmpeg must split on i-frames, it will seek to the nearest i-frame to begin the stream copy.</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p>Variation: trim file by setting duration, by using <code>-t</code> instead of <code>-to</code></p>
+      <p><code>ffmpeg -i <em>input_file</em> -ss 00:05:00 -t 10 -c copy <em>output_file</em></code></p>
+      <dl>
+        <dt>-ss 00:05:00 -t 10</dt><dd>Beginning five minutes into the original video, this command will create a 10-second-long excerpt.</dd>
+      </dl>
+      <p>Note: In order to keep the original timestamps, without trying to sanitize them, you may add the <code>-copyts</code> option.</p>
+      <p class="link"></p>
+    </div>
+    <!-- ends Trim -->
+
+    <!-- Excerpt from beginning -->
+    <label class="recipe" for="excerpt_from_start">Create an excerpt, starting from the beginning of the file</label>
+    <input type="checkbox" id="excerpt_from_start">
+    <div class="hiding">
+      <h3>Excerpt from beginning</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -t <em>5</em> -c copy -map 0 <em>output_file</em></code></p>
+      <p>This command captures a certain portion of a file, starting from the beginning and continuing for the amount of time (in seconds) specified in the script. This can be used to create a preview file, or to remove unwanted content from the end of the file. To be more specific, use timecode, such as 00:00:05.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>-t <em>5</em></dt><dd>tells FFmpeg to stop copying from the input file after a certain time, and specifies the number of seconds after which to stop copying. In this case, 5 seconds is specified.</dd>
+        <dt>-c copy</dt><dd>use stream copy mode to re-mux instead of re-encode</dd>
+        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p class="link"></p>
+    </div>
+    <!-- ends Excerpt from beginning -->
+
+    <!-- Excerpt to end -->
+    <label class="recipe" for="excerpt_to_end">Create a new file with the first five seconds trimmed off the original</label>
+    <input type="checkbox" id="excerpt_to_end">
+    <div class="hiding">
+      <h3>Excerpt to end</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -ss <em>5</em> -c copy -map 0 <em>output_file</em></code></p>
+      <p>This command copies a file starting from a specified time, removing the first few seconds from the output. This can be used to create an excerpt, or remove unwanted content from the beginning of a file.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>-ss <em>5</em></dt><dd>tells FFmpeg what timecode in the file to look for to start copying, and specifies the number of seconds into the video that FFmpeg should start copying. To be more specific, you can use timecode such as 00:00:05.</dd>
+        <dt>-c copy</dt><dd>use stream copy mode to re-mux instead of re-encode</dd>
+        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p class="link"></p>
+    </div>
+    <!-- ends Excerpt to end -->
+
+    <!-- Excerpt from end -->
+    <label class="recipe" for="excerpt_from_end">Create a new file with the final five seconds of the original</label>
+    <input type="checkbox" id="excerpt_from_end">
+    <div class="hiding">
+      <h3>Excerpt from end</h3>
+      <p><code>ffmpeg -sseof <em>-5</em> -i <em>input_file</em> -c copy -map 0 <em>output_file</em></code></p>
+      <p>This command copies a file starting from a specified time before the end of the file, removing everything before from the output. This can be used to create an excerpt, or extract content from the end of a file (e.g. for extracting the closing credits).</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-sseof <em>-5</em></dt><dd>This parameter must stay before the input file. It tells FFmpeg what timecode in the file to look for to start copying, and specifies the number of seconds from the end of the video that FFmpeg should start copying. The end of the file has index 0 and the minus sign is needed to reference earlier portions. To be more specific, you can use timecode such as -00:00:05. Note that in most file formats it is not possible to seek exactly, so FFmpeg will seek to the closest point before.</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>-c copy</dt><dd>use stream copy mode to re-mux instead of re-encode</dd>
+        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p class="link"></p>
+    </div>
+    <!-- ends Excerpt from end -->
+
+    <!-- Trim start silence -->
+    <label class="recipe" for="trim_start_silence">Trim silence from beginning of an audio file</label>
+    <input type="checkbox" id="trim_start_silence">
+    <div class="hiding">
+      <h3>Remove silent portion at the beginning of an audio file</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -af silenceremove=start_threshold=-57dB:start_duration=1:start_periods=1  -c:a <em>your_codec_choice</em> -ar <em>your_sample_rate_choice</em> <em>output_file</em></code></p>
+      <p>This command will automatically remove silence at the beginning of an audio file. The threshold for what qualifies as silence can be changed - this example uses anything under -57 dB, which is a decent level for accounting for analogue hiss.</p>
+      <p><strong>Note:</strong> Since this command uses a filter, the audio stream will be re-encoded for the output. If you do not specify a sample rate or codec, this command will use the sample rate from your input and <a href='#codec-defaults'>the codec defaults for your output format</a>. Take care that you are getting your intended results!</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file (e.g. input_file.wav)</dd>
+        <dt>-af silenceremove</dt><dd>applies the silence remove filter</dd>
+        <dt>start_threshold=-57dB</dt><dd>tells the filter the threshold for what to call 'silence' for the purpose of removal. This can be increased or decreased as necessary.</dd>
+        <dt>start_duration=1</dt><dd>This tells the filter how much non-silent audio must be detected before it stops trimming. With a value of <code>0</code> the filter would stop after detecting any non-silent audio. A setting of <code>1</code> allows it to continue trimming through short 'pops' such as those caused by engaging the playback device, or the recorded sound of a microphone being plugged in.</dd>
+        <dt>start_periods=1</dt><dd>This tells the filter to trim the first example of silence it discovers from the beginning of the file. This value could be increased to remove subsequent silent portions from the file if desired.</dd>
+        <dt>-c:a <em>your_codec_choice</em></dt><dd>This tells the filter what codec to use, and must be specified to avoid defaults. If you want 24 bit PCM, your value would be <code>-c:a pcm_s24le</code>.</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file (e.g. output_file.wav).</dd>
+      </dl>
+    </div>
+    <!-- ends Trim start silence -->
+
+    <!-- Trim end silence -->
+    <label class="recipe" for="trim_end_silence">Trim silence from the end of an audio file</label>
+    <input type="checkbox" id="trim_end_silence">
+    <div class="hiding">
+      <h3>Remove silent portion from the end of an audio file</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -af areverse,silenceremove=start_threshold=-57dB:start_duration=1:start_periods=1,areverse -c:a <em>your_codec_choice</em> -ar <em>your_sample_rate_choice</em> <em>output_file</em></code></p>
+      <p>This command will automatically remove silence at the end of an audio file. Since the <code>silenceremove</code> filter is best at removing silence from the beginning of files, this command used the <code>areverse</code> filter twice to reverse the input, remove silence and then restore correct orientation.</p>
+      <p><strong>Note:</strong> Since this command uses a filter, the audio stream will be re-encoded for the output. If you do not specify a sample rate or codec, this command will use the sample rate from your input and <a href='#codec-defaults'>the codec defaults for your output format</a>. Take care that you are getting your intended results!</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file (e.g. input_file.wav)</dd>
+        <dt>-af areverse,</dt><dd>starts the filter chain with reversing the input</dd>
+        <dt>silenceremove</dt><dd>applies the silence remove filter</dd>
+        <dt>start_threshold=-57dB</dt><dd>tells the filter the threshold for what to call 'silence' for the purpose of removal. This can be increased or decreased as necessary.</dd>
+        <dt>start_duration=1</dt><dd>This tells the filter how much non-silent audio must be detected before it stops trimming. With a value of <code>0</code> the filter would stop after detecting any non-silent audio. A setting of <code>1</code> allows it to continue trimming through short 'pops' such as those caused by engaging the playback device, or the recorded sound of a microphone being plugged in.</dd>
+        <dt>start_periods=1</dt><dd>This tells the filter to trim the first example of silence it discovers.</dd>
+        <dt>areverse</dt><dd>applies the audio reverse filter again to restore input to correct orientation.</dd>
+        <dt>-c:a <em>your_codec_choice</em></dt><dd>This tells the filter what codec to use, and must be specified to avoid defaults. If you want 24 bit PCM, your value would be <code>-c:a pcm_s24le</code>.</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file (e.g. output_file.wav).</dd>
+      </dl>
+    </div>
+    <!-- ends Trim end silence -->
+
+    </div>
+    <div class="well">
+    <h2 id="cronjob">Scheduling a Cron Job</h2>
+
+    <!-- NTSC to H.264 -->
+    <label class="recipe" for="ntsc_to_h264">Upscaled, pillar-boxed HD H.264 access files from SD NTSC source</label>
+    <input type="checkbox" id="ntsc_to_h264">
+    <div class="hiding">
+      <h3>Upscaled, Pillar-boxed HD H.264 Access Files from SD NTSC source</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -filter:v "yadif, scale=1440:1080:flags=lanczos, pad=1920:1080:(ow-iw)/2:(oh-ih)/2, format=yuv420p" <em>output_file</em></code></p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>-c:v libx264</dt><dd>encodes video stream with libx264 (h264)</dd>
+        <dt>-filter:v</dt><dd>a video filter will be used</dd>
+        <dt>"</dt><dd>quotation mark to start filtergraph</dd>
+        <dt>yadif</dt><dd>deinterlacing filter (‘yet another deinterlacing filter’)<br>
+         By default, <a href="https://ffmpeg.org/ffmpeg-filters.html#yadif-1" target="_blank">yadif</a> will output one frame for each frame. Outputting one frame for each <em>field</em> (thereby doubling the frame rate) with <code>yadif=1</code> may produce visually better results.</dd>
+        <dt>scale=1440:1080:flags=lanczos</dt><dd>resizes the image to 1440x1080, using the Lanczos scaling algorithm, which is slower but better than the default bilinear algorithm.</dd>
+        <dt>pad=1920:1080:(ow-iw)/2:(oh-ih)/2</dt><dd>pads the area around the 4:3 input video to create a 16:9 output video</dd>
+        <dt>format=yuv420p</dt><dd>specifies a pixel format of Y′C<sub>B</sub>C<sub>R</sub> 4:2:0</dd>
+        <dt>"</dt><dd>quotation mark to end filtergraph</dd>
+        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p><strong>Note:</strong> the very same scaling filter also downscales a bigger image size into HD.</p>
+      <p class="link"></p>
+    </div>
+    <!-- ends NTSC to H.264 -->
+
+    <!-- Deinterlace video -->
+    <label class="recipe" for="deinterlace">Deinterlace video</label>
+    <input type="checkbox" id="deinterlace">
+    <div class="hiding">
+      <h3>Deinterlace a video</h3>
+      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -vf "yadif,format=yuv420p" <em>output_file</em></code></p>
+      <p>This command takes an interlaced input file and outputs a deinterlaced H.264 MP4.</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>-c:v libx264</dt><dd>tells FFmpeg to encode the video stream as H.264</dd>
+        <dt>-vf</dt><dd>video filtering will be used (<code>-vf</code> is an alias of <code>-filter:v</code>)</dd>
+        <dt>"</dt><dd>start of filtergraph (see below)</dd>
+        <dt>yadif</dt><dd>deinterlacing filter (‘yet another deinterlacing filter’)<br>
+        By default, <a href="https://ffmpeg.org/ffmpeg-filters.html#yadif-1" target="_blank">yadif</a> will output one frame for each frame. Outputting one frame for each <em>field</em> (thereby doubling the frame rate) with <code>yadif=1</code> may produce visually better results.</dd>
+        <dt>,</dt><dd>separates filters</dd>
+        <dt>format=yuv420p</dt><dd>chroma subsampling set to 4:2:0<br>
+        By default, <code>libx264</code> will use a chroma subsampling scheme that is the closest match to that of the input. This can result in Y′C<sub>B</sub>C<sub>R</sub> 4:2:0, 4:2:2, or 4:4:4 chroma subsampling. QuickTime and most other non-FFmpeg based players can’t decode H.264 files that are not 4:2:0, therefore it’s advisable to specify 4:2:0 chroma subsampling.</dd>
+        <dt>"</dt><dd>end of filtergraph</dd>
+        <dt><em>output file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+      <p><code>"yadif,format=yuv420p"</code> is an FFmpeg <a href="https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship" target="_blank">filtergraph</a>. Here the filtergraph is made up of one filter chain, which is itself made up of the two filters (separated by the comma).<br>
+      The enclosing quote marks are necessary when you use spaces within the filtergraph, e.g. <code>-vf "yadif, format=yuv420p"</code>, and are included above as an example of good practice.</p>
+      <p><strong>Note:</strong> FFmpeg includes several deinterlacers apart from <a href="https://ffmpeg.org/ffmpeg-filters.html#yadif-1" target="_blank">yadif</a>: <a href="https://ffmpeg.org/ffmpeg-filters.html#bwdif" target="_blank">bwdif</a>, <a href="https://ffmpeg.org/ffmpeg-filters.html#w3fdif" target="_blank">w3fdif</a>, <a href="https://ffmpeg.org/ffmpeg-filters.html#kerndeint" target="_blank">kerndeint</a>, and <a href="https://ffmpeg.org/ffmpeg-filters.html#nnedi" target="_blank">nnedi</a>.</p>
+      <p>For more H.264 encoding options, see the latter section of the <a href="#transcode_h264">encode H.264 command</a>.</p>
+      <div class="sample-image">
+        <h2>Example</h2>
+        <p>Before and after deinterlacing:</p>
+        <img src="img/interlaced_video.png" alt="VLC screenshot of original interlaced video">
+        <img src="img/deinterlaced_video.png" alt="VLC screenshot of deinterlaced video">
+      </div>
+      <p class="link"></p>
+    </div>
+    <!-- ends Deinterlace video -->
+    </div>
+  </div><!-- ends "content" -->
+
+<!-- sample example -->
+<!--   <label class="recipe" for="*****unique name*****">*****Title****</label>
+  <input type="checkbox" id="*****unique name*****">
+  <div class="hiding">
+Change the above data-target field, the hover-over description, the button text, and the below div ID
+  <h3>*****Longer title*****</h3>
+  <p><code>ffmpeg -i <em>input_file</em> *****code goes here***** <em>output_file</em></code></p>
+  <p>This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info!</p>
+  <dl>
+    <dt>ffmpeg</dt><dd>starts the command</dd>
+    <dt>-i <em>input file</em></dt><dd>path, name and extension of the input file</dd>
+    <dt>*****parameter*****</dt><dd>*****comments*****</dd>
+    <dt><em>output file</em></dt><dd>path, name and extension of the output file</dd>
+  </dl>
+</div> -->
+<!-- ends sample example -->
+
+<footer class="footer">
+  <p>Skeleton based on <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffmprovisr</a></p>
+</footer>
+</div><!-- ends "grid" -->
+</body>
+</html>
