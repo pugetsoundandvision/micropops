@@ -17,9 +17,8 @@
   <nav class="sidebar well">
     <h2 class="heading">Table of Contents</h2>
     <a href="#about"><div class="contents-list">MIPoPS Microservices</div></a>
-    <a href="#move"><div class="contents-list">Moving Files</div></a>
-    <a href="#copy"><div class="contents-list">Copying Files</div></a>
-    <a href="#rewrap"><div class="contents-list">Change container (rewrap)</div></a>
+    <a href="#move"><div class="contents-list">Moving and Copying Files</div></a>
+    <a href="#rewrap"><div class="contents-list">Rewrap a video</div></a>
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
   </nav>
@@ -31,7 +30,7 @@
       <p> <img src="img/mipopslogo.png" style="width:65%;height:65%;"></p> 
 	  <p>This page is an evolving library of some of the most common commands used for manipulating digital objects at <a href="https://mipops.org" target="_blank">Moving Image Preservation of Puget Sound</a>.</p>
       <p>The following commands are primarily written in <a href="https://guide.bash.academy/inception/" target="_blank">bash</a>. We've also included the most common <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a> commands we use. FFmpeg is a powerful tool for manipulating audiovisual files. For an excellent, in-depth resource for using FFmpeg in the command line, check out <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank"> ffmprovsir</a>.</p>
-      <p>Contributors:<a href="hhttps://github.com/alavigne12" target="_blank"> Ari Lavigne</a>,<a href="https://github.com/libbyhopfauf" target="_blank"> Libby Hopfauf</a>,<a href="https://github.com/privatezero" target="_blank"> Andrew Weaver</a>, and everyone who contributed to the ffmprovisor project (where the ffmpeg commands presented here were sourced).</p>
+      <p>Contributors: <a href="hhttps://github.com/alavigne12" target="_blank">Ari Lavigne</a>, <a href="https://github.com/libbyhopfauf" target="_blank">Libby Hopfauf</a>, <a href="https://github.com/privatezero" target="_blank">Andrew Weaver</a>, and everyone who contributed to the ffmprovisor project (where the ffmpeg commands presented here were sourced).</p>
       <span class="intro-lead">License</span>
       <p class="license">
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons License" src="img/cc.png"></a><br>
@@ -47,7 +46,7 @@
       <div class="hiding">
        <p>This is a loop script that will find all .MP4s in a directory and copy them into a new directory elsewhere. Useful for copying all access files from a directory and putting them into an Access copies folder.</p>
 	   <p>First, <code>cd</code> into the directory holding the access files you want to copy. At MIPoPS, this is usually the Participating Institutions directory.</p>
-	   <p><code>cd /MIPoPS/Desktop/PIs</code><br>
+	   <p><code>cd /MIPoPS/Desktop/PIs/Institution1</code><br>
 	   <p><code>#!/bin/bash<br>while read TARGET<br>
 do rsync -av "$TARGET"  [/EXAMPLE/PATH/ACCESSFILES]<br>
 done < <(find "$PWD" -iname "*.mp4")</code></p>
@@ -63,7 +62,7 @@ done < <(find "$PWD" -iname "*.mp4")</code></p>
         <p>This script runs a loop that identifies all MP4s in a directory, then moves them into directories that have the same name.</p>
 		<p>At MIPoPS, this is useful for moving all access copies into their home directories..</P>
 		<p><code>cd  [EXAMPLE/PATH/TO/TARGET/DIR]</code><p>
-		<p>At MIPoPS, this would usually be: <code>cd /MIPoPS/Desktop/PIs</code></p>
+		<p>At MIPoPS, this would usually be: <code>cd /MIPoPS/Desktop/PIs/Institution1</code></p>
         <p><code>#!/bin/bash<br>
 for f in *.mp4; do<br>
   [[ -f "$f" ]] || continue<br>
@@ -73,86 +72,6 @@ done</code></p>
       </div>
       <!-- Move all Access files into their respective directories -->
     </div>
-    <div class="well">
-
-    <h2 id="copy">Copying Files</h2>
-    <!-- Codec Defaults explanation -->
-    <label class="recipe" for="codec-defaults">Codec defaults</label>
-    <input type="checkbox" id="codec-defaults">
-    <div class="hiding">
-      <h3>Codec Defaults</h3>
-      <p>Unless specified, FFmpeg will automatically set codec choices and codec parameters based off of internal defaults. These defaults are applied based on the file type used in the output (for example <code>.mov</code> or <code>.wav</code>).</p>
-      <p>When creating or transcoding files with FFmpeg, it is important to consider codec settings for both audio and video, as the default options may not be desirable in your particular context. The following is a brief list of codec defaults for some common file types:</p>
-      <ul>
-        <li><code>.avi</code>: Audio Codec: mp3, Video Codec: mpeg4</li>
-        <li><code>.mkv</code>: Audio Codec: ac3, Video Codec: h.264</li>
-        <li><code>.mov</code>: Audio Codec: aac, Video Codec: h.264</li>
-        <li><code>.mp4</code>: Audio Codec: aac, Video Codec: h.264</li>
-        <li><code>.mpg</code>: Audio Codec: mp2, Video Codec: mpeg1video</li>
-        <li><code>.mxf</code>: Audio Codec: pcm_s16le, Video Codec: mpeg2video</li>
-        <li><code>.wav</code>: Audio Codec: pcm_s16le (16 bit PCM)</li>
-      </ul>
-    </div>
-    <!-- End Codec Defaults -->
-
-    <!-- Filtergraph explanation -->
-    <label class="recipe" for="filtergraphs">Filtergraphs</label>
-    <input type="checkbox" id="filtergraphs">
-    <div class="hiding">
-      <h3>Filtergraphs</h3>
-      <p>Many FFmpeg commands use filters that manipulate the video or audio stream in some way: for example, <a href="https://ffmpeg.org/ffmpeg-filters.html#hflip" target="_blank">hflip</a> to horizontally flip a video, or <a href="https://ffmpeg.org/ffmpeg-filters.html#amerge-1" target="_blank">amerge</a> to merge two or more audio tracks into a single stream.</p>
-      <p>The use of a filter is signaled by the flag <code>-vf</code> (video filter) or <code>-af</code> (audio filter), followed by the name and options of the filter itself. For example, take the <a href="#convert-colorspace">convert colorspace</a> command:</p>
-      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -vf colormatrix=<em>src</em>:<em>dst</em> <em>output_file</em></code>
-      <p>Here, <a href="https://ffmpeg.org/ffmpeg-filters.html#colormatrix" target="_blank">colormatrix</a> is the filter used, with <em>src</em> and <em>dst</em> representing the source and destination colorspaces. This part following the <code>-vf</code> is a <strong>filtergraph</strong>.</p>
-      <p>It is also possible to apply multiple filters to an input, which are sequenced together in the filtergraph. A chained set of filters is called a filter chain, and a filtergraph may include multiple filter chains. Filters in a filterchain are separated from each other by commas (<code>,</code>), and filterchains are separated from each other by semicolons (<code>;</code>). For example, take the <a href="#inverse-telecine">inverse telecine</a> command:</p>
-      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -vf "fieldmatch,yadif,decimate" <em>output_file</em></code></p>
-      <p>Here we have a filtergraph including one filter chain, which is made up of three video filters.</p>
-      <p>It is often prudent to enclose your filtergraph in quotation marks; this means that you can use spaces within the filtergraph. Using the inverse telecine example again, the following filter commands are all valid and equivalent:</p>
-      <ul>
-        <li><code>-vf fieldmatch,yadif,decimate</code></li>
-        <li><code>-vf "fieldmatch,yadif,decimate"</code></li>
-        <li><code>-vf "fieldmatch, yadif, decimate"</code></li>
-      </ul>
-      <p>but <code>-vf fieldmatch, yadif, decimate</code> is not valid.</p>
-      <p>The ordering of the filters is significant. Video filters are applied in the order given, with the output of one filter being passed along as the input to the next filter in the chain. In the example above, <code>fieldmatch</code> reconstructs the original frames from the inverse telecined video, <code>yadif</code> deinterlaces (this is a failsafe in case any combed frames remain, for example if the source mixes telecined and real interlaced content), and <code>decimate</code> deletes duplicated frames. Clearly, it is not possible to delete duplicated frames before those frames are reconstructed.</p>
-      <h4>Notes</h4>
-      <ul>
-        <li><code>-vf</code> is an alias for <code>-filter:v</code></li>
-        <li>If the command involves more than one input or output, you must use the flag <code>-filter_complex</code> instead of <code>-vf</code>.</li>
-        <li>Straight quotation marks ("like this") rather than curved quotation marks (“like this”) should be used.</li>
-      </ul>
-      <p>For more information, check out the FFmpeg wiki <a href="https://trac.ffmpeg.org/wiki/FilteringGuide" target="_blank">Filtering Guide</a>.</p>
-      <p class="link"></p>
-    </div>
-    <!-- End Filtergraph explanation -->
-
-    <!-- Stream mapping explanation -->
-    <label class="recipe" for="stream-mapping">Stream mapping</label>
-    <input type="checkbox" id="stream-mapping">
-    <div class="hiding">
-      <h3>Stream mapping</h3>
-      <p>Stream mapping is the practice of defining which of the streams (e.g., video or audio tracks) present in an input file will be present in the output file. FFmpeg recognizes five stream types:</p>
-      <ul>
-        <li><code>a</code> - audio</li>
-        <li><code>v</code> - video</li>
-        <li><code>s</code> - subtitle</li>
-        <li><code>d</code> - data (including timecode tracks)</li>
-        <li><code>t</code> - attachment</li>
-      </ul>
-      <p>Mapping is achieved by use of the <code>-map</code> flag, followed by an action of the type <code>file_number:stream_type[:stream_number]</code>. Numbering is zero-indexed, and it's possible to map by stream type and/or overall stream order within the input file. For example:</p>
-      <ul>
-        <li><code>-map 0:v</code> means ‘take all video streams from the first input file’.</li>
-        <li><code>-map 0:3</code> means ‘take the fourth stream from the first input file’.</li>
-        <li><code>-map 0:a:2</code> means ‘take the third audio stream from the first input file’.</li>
-        <li><code>-map 0:0 -map 0:2</code> means ‘take the first and third streams from the first input file’.</li>
-        <li><code>-map 0:1 -map 1:0</code> means ‘take the second stream from the first input file and the first stream from the second input file’.</li>
-      </ul>
-      <p>To map <em>all</em> streams in the input file to the output file, use <code>-map 0</code>. However, note that not all container formats can include all stream types: for example, .mp4 cannot contain timecode.</p>
-      <p>When no mapping is specified in an ffmpeg command, the default for video files is to take just one video and one audio stream for the output: other stream types, such as timecode or subtitles, will not be copied to the output file by default. If multiple video or audio streams are present, the best quality one is automatically selected by FFmpeg.</p>
-      <p>For more information, check out the FFmpeg wiki <a href="https://trac.ffmpeg.org/wiki/Map" target="_blank">Map</a> page, and the official FFmpeg <a href="https://ffmpeg.org/ffmpeg.html#Advanced-options" target="_blank">documentation on <code>-map</code></a>.</p>
-      <p class="link"></p>
-    </div>
-    <!-- End Stream Mapping explanation -->
 
     </div>
     <div class="well">
