@@ -132,7 +132,6 @@ done</code></p>
         <dt>-to 00:55:00</dt><dd>sets out point at 00:55:00</dd>
         <dt>-c copy</dt><dd>use stream copy mode (no re-encoding)<br>
         <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.<br>
-        <strong>Note:</strong> watch out when using <code>-ss</code> with <code>-c copy</code> if the source is encoded with an interframe codec (e.g., H.264). Since FFmpeg must split on i-frames, it will seek to the nearest i-frame to begin the stream copy.</dd>
         <dt><em>/PATH/TO/output_file</em></dt><dd>path, name and extension of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
       </dl>
       <p>Variation: trim file by setting duration, by using <code>-t</code> instead of <code>-to</code></p>
@@ -140,117 +139,47 @@ done</code></p>
       <dl>
         <dt>-ss 00:05:00 -t 10</dt><dd>Beginning five minutes into the original video, this command will create a 10-second-long excerpt.</dd>
       </dl>
+	  <small>This section modified from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
       <p class="link"></p>
     </div>
     <!-- ends Trim -->
-
-    <!-- Excerpt to end -->
-    <label class="recipe" for="excerpt_to_end">Create a new file with the first five seconds trimmed off the original</label>
-    <input type="checkbox" id="excerpt_to_end">
-    <div class="hiding">
-      <h3>Excerpt to end</h3>
-      <p><code>ffmpeg -i <em>input_file</em> -ss <em>5</em> -c copy -map 0 <em>output_file</em></code></p>
-      <p>This command copies a file starting from a specified time, removing the first few seconds from the output. This can be used to create an excerpt, or remove unwanted content from the beginning of a file.</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
-        <dt>-ss <em>5</em></dt><dd>tells FFmpeg what timecode in the file to look for to start copying, and specifies the number of seconds into the video that FFmpeg should start copying. To be more specific, you can use timecode such as 00:00:05.</dd>
-        <dt>-c copy</dt><dd>use stream copy mode to re-mux instead of re-encode</dd>
-        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.</dd>
-        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
-      </dl>
-      <p class="link"></p>
-    </div>
-    <!-- ends Excerpt to end -->
-
-    <!-- Excerpt from end -->
-    <label class="recipe" for="excerpt_from_end">Create a new file with the final five seconds of the original</label>
-    <input type="checkbox" id="excerpt_from_end">
-    <div class="hiding">
-      <h3>Excerpt from end</h3>
-      <p><code>ffmpeg -sseof <em>-5</em> -i <em>input_file</em> -c copy -map 0 <em>output_file</em></code></p>
-      <p>This command copies a file starting from a specified time before the end of the file, removing everything before from the output. This can be used to create an excerpt, or extract content from the end of a file (e.g. for extracting the closing credits).</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-sseof <em>-5</em></dt><dd>This parameter must stay before the input file. It tells FFmpeg what timecode in the file to look for to start copying, and specifies the number of seconds from the end of the video that FFmpeg should start copying. The end of the file has index 0 and the minus sign is needed to reference earlier portions. To be more specific, you can use timecode such as -00:00:05. Note that in most file formats it is not possible to seek exactly, so FFmpeg will seek to the closest point before.</dd>
-        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
-        <dt>-c copy</dt><dd>use stream copy mode to re-mux instead of re-encode</dd>
-        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.</dd>
-        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
-      </dl>
-      <p class="link"></p>
-    </div>
-    <!-- ends Excerpt from end -->
-
-    <!-- Trim start silence -->
-    <label class="recipe" for="trim_start_silence">Trim silence from beginning of an audio file</label>
-    <input type="checkbox" id="trim_start_silence">
-    <div class="hiding">
-      <h3>Remove silent portion at the beginning of an audio file</h3>
-      <p><code>ffmpeg -i <em>input_file</em> -af silenceremove=start_threshold=-57dB:start_duration=1:start_periods=1  -c:a <em>your_codec_choice</em> -ar <em>your_sample_rate_choice</em> <em>output_file</em></code></p>
-      <p>This command will automatically remove silence at the beginning of an audio file. The threshold for what qualifies as silence can be changed - this example uses anything under -57 dB, which is a decent level for accounting for analogue hiss.</p>
-      <p><strong>Note:</strong> Since this command uses a filter, the audio stream will be re-encoded for the output. If you do not specify a sample rate or codec, this command will use the sample rate from your input and <a href='#codec-defaults'>the codec defaults for your output format</a>. Take care that you are getting your intended results!</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file (e.g. input_file.wav)</dd>
-        <dt>-af silenceremove</dt><dd>applies the silence remove filter</dd>
-        <dt>start_threshold=-57dB</dt><dd>tells the filter the threshold for what to call 'silence' for the purpose of removal. This can be increased or decreased as necessary.</dd>
-        <dt>start_duration=1</dt><dd>This tells the filter how much non-silent audio must be detected before it stops trimming. With a value of <code>0</code> the filter would stop after detecting any non-silent audio. A setting of <code>1</code> allows it to continue trimming through short 'pops' such as those caused by engaging the playback device, or the recorded sound of a microphone being plugged in.</dd>
-        <dt>start_periods=1</dt><dd>This tells the filter to trim the first example of silence it discovers from the beginning of the file. This value could be increased to remove subsequent silent portions from the file if desired.</dd>
-        <dt>-c:a <em>your_codec_choice</em></dt><dd>This tells the filter what codec to use, and must be specified to avoid defaults. If you want 24 bit PCM, your value would be <code>-c:a pcm_s24le</code>.</dd>
-        <dt><em>output_file</em></dt><dd>path, name and extension of the output file (e.g. output_file.wav).</dd>
-      </dl>
-    </div>
-    <!-- ends Trim start silence -->
-
-    <!-- Trim end silence -->
-    <label class="recipe" for="trim_end_silence">Trim silence from the end of an audio file</label>
-    <input type="checkbox" id="trim_end_silence">
-    <div class="hiding">
-      <h3>Remove silent portion from the end of an audio file</h3>
-      <p><code>ffmpeg -i <em>input_file</em> -af areverse,silenceremove=start_threshold=-57dB:start_duration=1:start_periods=1,areverse -c:a <em>your_codec_choice</em> -ar <em>your_sample_rate_choice</em> <em>output_file</em></code></p>
-      <p>This command will automatically remove silence at the end of an audio file. Since the <code>silenceremove</code> filter is best at removing silence from the beginning of files, this command used the <code>areverse</code> filter twice to reverse the input, remove silence and then restore correct orientation.</p>
-      <p><strong>Note:</strong> Since this command uses a filter, the audio stream will be re-encoded for the output. If you do not specify a sample rate or codec, this command will use the sample rate from your input and <a href='#codec-defaults'>the codec defaults for your output format</a>. Take care that you are getting your intended results!</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file (e.g. input_file.wav)</dd>
-        <dt>-af areverse,</dt><dd>starts the filter chain with reversing the input</dd>
-        <dt>silenceremove</dt><dd>applies the silence remove filter</dd>
-        <dt>start_threshold=-57dB</dt><dd>tells the filter the threshold for what to call 'silence' for the purpose of removal. This can be increased or decreased as necessary.</dd>
-        <dt>start_duration=1</dt><dd>This tells the filter how much non-silent audio must be detected before it stops trimming. With a value of <code>0</code> the filter would stop after detecting any non-silent audio. A setting of <code>1</code> allows it to continue trimming through short 'pops' such as those caused by engaging the playback device, or the recorded sound of a microphone being plugged in.</dd>
-        <dt>start_periods=1</dt><dd>This tells the filter to trim the first example of silence it discovers.</dd>
-        <dt>areverse</dt><dd>applies the audio reverse filter again to restore input to correct orientation.</dd>
-        <dt>-c:a <em>your_codec_choice</em></dt><dd>This tells the filter what codec to use, and must be specified to avoid defaults. If you want 24 bit PCM, your value would be <code>-c:a pcm_s24le</code>.</dd>
-        <dt><em>output_file</em></dt><dd>path, name and extension of the output file (e.g. output_file.wav).</dd>
-      </dl>
-    </div>
-    <!-- ends Trim end silence -->
 
     </div>
     <div class="well">
     <h2 id="cronjob">Scheduling a Cron Job</h2>
 
-    <!-- NTSC to H.264 -->
-    <label class="recipe" for="ntsc_to_h264">Upscaled, pillar-boxed HD H.264 access files from SD NTSC source</label>
-    <input type="checkbox" id="ntsc_to_h264">
+    <!-- Using Crontab-ui -->
+    <label class="recipe" for="crontab_ui">Cron Job Manager</label>
+    <input type="checkbox" id="crontab_ui">
     <div class="hiding">
-      <h3>Upscaled, Pillar-boxed HD H.264 Access Files from SD NTSC source</h3>
-      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -filter:v "yadif, scale=1440:1080:flags=lanczos, pad=1920:1080:(ow-iw)/2:(oh-ih)/2, format=yuv420p" <em>output_file</em></code></p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file</dd>
-        <dt>-c:v libx264</dt><dd>encodes video stream with libx264 (h264)</dd>
-        <dt>-filter:v</dt><dd>a video filter will be used</dd>
-        <dt>"</dt><dd>quotation mark to start filtergraph</dd>
-        <dt>yadif</dt><dd>deinterlacing filter (‘yet another deinterlacing filter’)<br>
-         By default, <a href="https://ffmpeg.org/ffmpeg-filters.html#yadif-1" target="_blank">yadif</a> will output one frame for each frame. Outputting one frame for each <em>field</em> (thereby doubling the frame rate) with <code>yadif=1</code> may produce visually better results.</dd>
-        <dt>scale=1440:1080:flags=lanczos</dt><dd>resizes the image to 1440x1080, using the Lanczos scaling algorithm, which is slower but better than the default bilinear algorithm.</dd>
-        <dt>pad=1920:1080:(ow-iw)/2:(oh-ih)/2</dt><dd>pads the area around the 4:3 input video to create a 16:9 output video</dd>
-        <dt>format=yuv420p</dt><dd>specifies a pixel format of Y′C<sub>B</sub>C<sub>R</sub> 4:2:0</dd>
-        <dt>"</dt><dd>quotation mark to end filtergraph</dd>
-        <dt><em>output_file</em></dt><dd>path, name and extension of the output file</dd>
-      </dl>
-      <p><strong>Note:</strong> the very same scaling filter also downscales a bigger image size into HD.</p>
+      <h3>Using Crontab-UI</h3>
+      <p>From the terminal, run <code>crontab-ui</code></p>
+	  <p>You will see the following output:<br>
+<code>Node version: [CURRENT VERSION]<br>
+Crontab UI is running at http://[IP ADDRESS]</code></p>
+	<p>Now, open your web browser and navigate to http://[IP ADDRESS]</p>
+	<p class="link"></p>
+	</div>
+	<!--  ends Using Crontab-ui -->
+   <!-- creating cron jobs -->
+<label class="recipe" for="creat_cron">Creating Cron Jobs</label>
+    <input type="checkbox" id="creat_cron">
+    <div class="hiding">	
+	<p>Here is the format for a simple Cron Job:<br>
+	<code>0 22 * * * /Users/MIPoPS/Desktop/BackUp.sh</code>
+	<p>The first part is <code>0 22 * * *</code> This is where we schedule the timer. This job will run at 10 pm every evening.<br>The rest of the line is the command as it would run from the command line. This job would run the BackUp shell script from MIPoPS desktop.</p>
+	<p>Each asterix represents a unit of time, as follows:<br>
+<code><small>Minute(0-59) Hour(0-24) Day_of_month(1-31) Month(1-12) Day_of_week(0-6)</small></code>
+<p><strong>Use MILITARY TIME!</p></strong>
+<p>This cron job will run at minute zero, every hour (i.e. an hourly cron job):<br>
+<code>0 * * * * [command]</code>
+<p>This is also an hourly cron job but run at minute 15 instead (i.e. 00:15, 01:15, 02:15 etc.):<br>
+<code>15 * * * * [command]</code>
+<p>This will run once a day, at 2:30am:<br>
+<code>30 2 * * * [command]</code>
+<p>This will run once a month, on the second day of the month at midnight (i.e. January 2nd 12:00am, February 2nd 12:00am etc.):<br>
+<code>0 0 2 * * [command]</code>
+
       <p class="link"></p>
     </div>
     <!-- ends NTSC to H.264 -->
