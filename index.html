@@ -127,7 +127,7 @@ done</code></p>
       <p>This command allows you to create an excerpt from a file without re-encoding the audiovisual data.</p>
       <dl>
         <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>input_file</em></dt><dd>path, name and extension of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+        <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path, name and extension of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
         <dt>-ss 00:02:00</dt><dd>sets in point at 00:02:00</dd>
         <dt>-to 00:55:00</dt><dd>sets out point at 00:55:00</dd>
         <dt>-c copy</dt><dd>use stream copy mode (no re-encoding)<br>
@@ -158,6 +158,7 @@ done</code></p>
 <code>Node version: [CURRENT VERSION]<br>
 Crontab UI is running at http://[IP ADDRESS]</code></p>
 	<p>Now, open your web browser and navigate to http://[IP ADDRESS]</p>
+	<p>From this page, you'll be able to schedule, edit, save, and delete jobs.</p>
 	<p class="link"></p>
 	</div>
 	<!--  ends Using Crontab-ui -->
@@ -183,42 +184,6 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
       <p class="link"></p>
     </div>
     <!-- ends NTSC to H.264 -->
-
-    <!-- Deinterlace video -->
-    <label class="recipe" for="deinterlace">Deinterlace video</label>
-    <input type="checkbox" id="deinterlace">
-    <div class="hiding">
-      <h3>Deinterlace a video</h3>
-      <p><code>ffmpeg -i <em>input_file</em> -c:v libx264 -vf "yadif,format=yuv420p" <em>output_file</em></code></p>
-      <p>This command takes an interlaced input file and outputs a deinterlaced H.264 MP4.</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>input file</em></dt><dd>path, name and extension of the input file</dd>
-        <dt>-c:v libx264</dt><dd>tells FFmpeg to encode the video stream as H.264</dd>
-        <dt>-vf</dt><dd>video filtering will be used (<code>-vf</code> is an alias of <code>-filter:v</code>)</dd>
-        <dt>"</dt><dd>start of filtergraph (see below)</dd>
-        <dt>yadif</dt><dd>deinterlacing filter (‘yet another deinterlacing filter’)<br>
-        By default, <a href="https://ffmpeg.org/ffmpeg-filters.html#yadif-1" target="_blank">yadif</a> will output one frame for each frame. Outputting one frame for each <em>field</em> (thereby doubling the frame rate) with <code>yadif=1</code> may produce visually better results.</dd>
-        <dt>,</dt><dd>separates filters</dd>
-        <dt>format=yuv420p</dt><dd>chroma subsampling set to 4:2:0<br>
-        By default, <code>libx264</code> will use a chroma subsampling scheme that is the closest match to that of the input. This can result in Y′C<sub>B</sub>C<sub>R</sub> 4:2:0, 4:2:2, or 4:4:4 chroma subsampling. QuickTime and most other non-FFmpeg based players can’t decode H.264 files that are not 4:2:0, therefore it’s advisable to specify 4:2:0 chroma subsampling.</dd>
-        <dt>"</dt><dd>end of filtergraph</dd>
-        <dt><em>output file</em></dt><dd>path, name and extension of the output file</dd>
-      </dl>
-      <p><code>"yadif,format=yuv420p"</code> is an FFmpeg <a href="https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship" target="_blank">filtergraph</a>. Here the filtergraph is made up of one filter chain, which is itself made up of the two filters (separated by the comma).<br>
-      The enclosing quote marks are necessary when you use spaces within the filtergraph, e.g. <code>-vf "yadif, format=yuv420p"</code>, and are included above as an example of good practice.</p>
-      <p><strong>Note:</strong> FFmpeg includes several deinterlacers apart from <a href="https://ffmpeg.org/ffmpeg-filters.html#yadif-1" target="_blank">yadif</a>: <a href="https://ffmpeg.org/ffmpeg-filters.html#bwdif" target="_blank">bwdif</a>, <a href="https://ffmpeg.org/ffmpeg-filters.html#w3fdif" target="_blank">w3fdif</a>, <a href="https://ffmpeg.org/ffmpeg-filters.html#kerndeint" target="_blank">kerndeint</a>, and <a href="https://ffmpeg.org/ffmpeg-filters.html#nnedi" target="_blank">nnedi</a>.</p>
-      <p>For more H.264 encoding options, see the latter section of the <a href="#transcode_h264">encode H.264 command</a>.</p>
-      <div class="sample-image">
-        <h2>Example</h2>
-        <p>Before and after deinterlacing:</p>
-        <img src="img/interlaced_video.png" alt="VLC screenshot of original interlaced video">
-        <img src="img/deinterlaced_video.png" alt="VLC screenshot of deinterlaced video">
-      </div>
-      <p class="link"></p>
-    </div>
-    <!-- ends Deinterlace video -->
-    </div>
   </div><!-- ends "content" -->
 
 <!-- sample example -->
