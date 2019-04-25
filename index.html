@@ -20,6 +20,7 @@
     <a href="#move"><div class="contents-list">Moving and Copying Files</div></a>
     <a href="#rewrap"><div class="contents-list">Rewrap a video</div></a>
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
+		<a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
   </nav>
 
@@ -48,7 +49,7 @@
 	   <p>First, <code>cd</code> into the directory holding the access files you want to copy. At MIPoPS, this is usually the Participating Institutions directory.</p>
 	   <p><code>cd /MIPoPS/Desktop/PIs/Institution1</code><br>
 	   <p><code>#!/bin/bash<br>while read TARGET<br>
-do rsync -av "$TARGET"  [/EXAMPLE/PATH/ACCESSFILES]<br>
+do rsync -av "$TARGET" /EXAMPLE/PATH/ACCESSFILES<br>
 done < <(find "$PWD" -iname "*.mp4")</code></p>
  <p>This script could be modified to look for and move other file types by modifing the input in <code>"*.mp4"</code>. Replacing that with <code>"*.dv"</code> would return all files ending in .dv. <code>"SAM_2019_*.*"</code> would move all files that have the naming convention "SAM_2019" of any file type. The asterix is a wildcard.</P>
         </dl>
@@ -61,7 +62,7 @@ done < <(find "$PWD" -iname "*.mp4")</code></p>
       <div class="hiding">
         <p>This script runs a loop that identifies all MP4s in a directory, then moves them into directories that have the same name.</p>
 		<p>At MIPoPS, this is useful for moving all access copies into their home directories..</P>
-		<p><code>cd  [EXAMPLE/PATH/TO/TARGET/DIR]</code><p>
+		<p><code>cd EXAMPLE/PATH/TO/TARGET/DIR</code><p>
 		<p>At MIPoPS, this would usually be: <code>cd /MIPoPS/Desktop/PIs/Institution1</code></p>
         <p><code>#!/bin/bash<br>
 for f in *.mp4; do<br>
@@ -90,7 +91,7 @@ done</code></p>
         <dt>-c copy</dt><dd>copy the streams directly, without re-encoding.</dd>
         <dt>-map 0</dt><dd>map all streams of the input to the output.<br>
         By default, FFmpeg will only map one stream of each type (video, audio, subtitles) to the output file. However, files may have multiple streams of a given type - for example, a video may have several audio tracks for different languages. Therefore, if you want to preserve all the streams in the original, it's necessary to use this option.</dd>
-        <dt><em>/PATH/TO/output_file.ext</em></dt><dd>path and name of the output file.<br>
+        <dt><em>/PATH/TO/output_file.ext</em></dt><dd>path and name of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.<br>
         The new container you are rewrapping to is defined by the filename extension used here, e.g. .mkv, .mp4, .mov.</dd>
       </dl>
 	  <small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
@@ -109,7 +110,7 @@ done</code></p>
         <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
         <dt>-f rawvideo</dt><dd>this tells FFmpeg to pass the video stream as raw video data without remuxing. This step is what ensures the survival of embedded metadata versus a standard rewrap.</dd>
         <dt>-c:v copy</dt><dd>copy the DV stream directly, without re-encoding.</dd>
-        <dt><em>/PATH/TO/output_file.dv</em></dt><dd>tells FFmpeg to use the DV wrapper for the output.</dd>
+        <dt><em>/PATH/TO/output_file.dv</em></dt><dd>tells FFmpeg to use the DV wrapper for the output. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
       </dl>
 	  <small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
       </dl><p class="link"></p>
@@ -143,7 +144,26 @@ done</code></p>
       <p class="link"></p>
     </div>
     <!-- ends Trim -->
-
+		
+  </div>
+    <div class="well">
+    <h2 id="videoaip">Run a loop using VideoAIP</h2>
+    <!-- Looping VideoAIP-->
+    <label class="recipe" for="videoaip_loop">Creating a loop with VideoAIP</label>
+    <input type="checkbox" id="videoaip_loop">
+    <div class="hiding">
+            <h3>Creating a loop with VideoAIP</h3>
+      <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
+      <p><code>#!/bin/bash</code><br>
+				<code>find /Users/mipopsmac2/Desktop/AIP_TEST -iname "*.mkv"</code><br>
+				<code>while read TARGET</code><br>
+				<code>do videoaip -l auto "$TARGET" </dev/null </code><br>
+				<code>done < <(find /Users/mipopsmac2/Desktop/AIP_TEST -name '*.mkv')</code></p>
+      </dl>
+      <p class="link"></p>
+    </div>
+    <!-- ends Looping VideoAIP -->
+		
     </div>
     <div class="well">
     <h2 id="cronjob">Scheduling a Cron Job</h2>
@@ -153,7 +173,10 @@ done</code></p>
     <input type="checkbox" id="crontab_ui">
     <div class="hiding">
       <h3>Using Crontab-UI</h3>
-      <p>From the terminal, run <code>crontab-ui</code></p>
+      <p>To use crontab-ui, first install <code>node</code> using:<br><code>brew install node</code></p>
+			<p>Then, install <code>crontab-ui</code> using:<br><code>npm -install -g crontab-ui</code></p>
+			<p><strong>You may need to use <code>sudo</code> when running the command above.</strong></p>
+			<p>From the terminal, run <code>crontab-ui</code></p>
 	  <p>You will see the following output:<br>
 <code>Node version: [CURRENT VERSION]<br>
 Crontab UI is running at http://[IP ADDRESS]</code></p>
