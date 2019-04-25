@@ -64,7 +64,7 @@ html, body {
 @media only screen and (min-width: 1500px) {
   .grid {
     max-width: 70%;
-    margin: 30 auto;
+    margin: 10 auto;
     grid-template-areas:
     "header  header"
     "sidebar content"
