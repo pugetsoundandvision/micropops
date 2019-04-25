@@ -2,7 +2,7 @@ html, body {
   line-height: 1.5;
   font-size: 18px;
   font-family: sans-serif;
-  color: #1a1a1a;
+  color: #004040;
   background-color: #ffffff;
   margin: 0;
   word-break: break-word;
@@ -162,7 +162,7 @@ img {
 }
 
 div {
-  color: #453131; /* CHANGES COLOR OF ALL INTERIOR TEXT, not box titles */
+  color: #004040; /* CHANGES COLOR OF ALL INTERIOR TEXT, not box titles */
 }
 
 .sidebar a {
@@ -170,7 +170,7 @@ div {
 }
 
 .recipe, .contents-list {
-  color: #453131;  /* CHANGES COLOR OF BOX LABEL TEXT */  /* */
+  color: #004040;  /* CHANGES COLOR OF BOX LABEL TEXT */  /* */
   background-color: #ffffff; /* changes color of boxes, unexpanded */
   padding: 14px;
   letter-spacing: 0.05em;
