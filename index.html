@@ -155,10 +155,11 @@ done</code></p>
             <h3>Creating a loop with VideoAIP</h3>
       <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
 			<p><code>#!/bin/bash<br>
-			find /PATH/TO/DIRECTORY -iname "*.mkv"<br>
 			while read TARGET<br>
 			do videoaip -l auto "$TARGET" &lt;/dev/null<br>
 			done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv')</code></p>
+			<p>VideoAIP will try to process any files that it comes across. To ensure VideoAIP only processes the file extensions you've defined, replace the last line of the script with:<br>
+				<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov'</code></p>
     </div>
     <!-- ends Looping VideoAIP -->
 		
