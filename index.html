@@ -155,12 +155,10 @@ done</code></p>
             <h3>Creating a loop with VideoAIP</h3>
       <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
       <p><code>#!/bin/bash</code><br>
-				<code>find /Users/mipopsmac2/Desktop/AIP_TEST -iname "*.mkv"</code><br>
+				<code>find /PATH/TO/DIRECTORY -iname "*.mkv"</code><br>
 				<code>while read TARGET</code><br>
-				<code>do videoaip -l auto "$TARGET" </dev/null </code><br>
-				<code>done < <(find /Users/mipopsmac2/Desktop/AIP_TEST -name '*.mkv')</code></p>
-      </dl>
-      <p class="link"></p>
+				<code>do videoaip -l auto "$TARGET" </dev/null <br></code>
+				<code>done < <(find /PATH/TO/SAME/DIRECTORY/AS/ABOVE -name '*.mkv')</code></p>
     </div>
     <!-- ends Looping VideoAIP -->
 		
