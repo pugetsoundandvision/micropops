@@ -85,7 +85,7 @@ a:visited {
 }
 
 .license img {
-  max-width: 5em;
+  max-width: 10em;
   display: inline;
 }
 
@@ -199,11 +199,11 @@ nav .heading {
 }
 
 .recipe:before {
-  content: "";
+  content: "📼";
 }
 
 .contents-list:before {
-  content: "";
+  content: "📼";
 }
 
 .recipe:before, .contents-list:before {
