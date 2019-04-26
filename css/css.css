@@ -52,8 +52,8 @@ html, body {
 
 @media only screen and (min-width: 1000px) {
   .grid {
-    grid-gap: 10rem;
-    grid-template-columns: 25% auto;
+    grid-gap: 1rem; /* INCREASES SPACE BETWEEN SIDE BAR AND MAIN COLUMN */
+    grid-template-columns: 25% auto; /* CHANGES WIDTH OF SIDEBAR*/
     grid-template-areas:
     "header  header"
     "sidebar content"
@@ -63,7 +63,7 @@ html, body {
 
 @media only screen and (min-width: 1500px) {
   .grid {
-    max-width: 70%;
+    max-width: 70%; /* CHANGES HOW MUCH OF THE SCREEN THE TWO COLUMNS TAKE UP */
     margin: 0 auto;
     grid-template-areas:
     "header  header"
