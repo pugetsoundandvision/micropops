@@ -64,7 +64,7 @@ html, body {
 @media only screen and (min-width: 1500px) {
   .grid {
     max-width: 70%; /* CHANGES HOW MUCH OF THE SCREEN THE TWO COLUMNS TAKE UP */
-    margin: 0 auto;
+    margin: 0 auto; /* CHANGES HOW MUCH SPACE IS TO THE RIGHT OF THE MAIN COLUMN */
     grid-template-areas:
     "header  header"
     "sidebar content"
@@ -73,15 +73,15 @@ html, body {
 }
 
 a {
-  color: #e27b69; /* changes the color of links */
+  color: #ffa060; /* changes the color of links */
 }
 
 a:hover {
-  color: #d4d926; /* changes the color of links when you hover over them and once they've been clicked on */
+  color: #ff6080; /* changes the color of links when you hover over them and once they've been clicked on */
 }
 
 a:visited {
-  color: #929598; /* changes the color of visited links */
+  color: #e8a99e; /* changes the color of visited links */
 }
 
 .license img {
