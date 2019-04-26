@@ -1,10 +1,10 @@
 html, body {
   line-height: 1.5;
-  font-size: 18px;
-  font-family: sans-serif;
-  color: #004040;
-  background-color: #ffffff;
-  margin: 0;
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  color: #004040; /* changes font color for Header text on both columns */
+  background-color: #EEF7ED;
+  margin: 10; /* changes amount of space on either side of columns */
   word-break: break-word;
 }
 
@@ -53,7 +53,7 @@ html, body {
 @media only screen and (min-width: 1000px) {
   .grid {
     grid-gap: 1rem; /* INCREASES SPACE BETWEEN SIDE BAR AND MAIN COLUMN */
-    grid-template-columns: 25% auto; /* CHANGES WIDTH OF SIDEBAR*/
+    grid-template-columns: 20% auto; /* CHANGES WIDTH OF SIDEBAR*/
     grid-template-areas:
     "header  header"
     "sidebar content"
@@ -73,15 +73,15 @@ html, body {
 }
 
 a {
-  color: #ffa060; /* changes the color of links */
+  color: #DD614A; /* changes the color of links */
 }
 
 a:hover {
-  color: #ff6080; /* changes the color of links when you hover over them and once they've been clicked on */
+  color: #F4A698; /* changes the color of links when you hover over them and once they've been clicked on */
 }
 
 a:visited {
-  color: #e8a99e; /* changes the color of visited links */
+  color: #73A580; /* changes the color of visited links */
 }
 
 .license img {
@@ -174,7 +174,7 @@ div {
   background-color: #ffffff; /* changes color of boxes, unexpanded */
   padding: 14px;
   letter-spacing: 0.05em;
-  border: 1px solid black;
+  border: 1px solid #DD614A;
   cursor: pointer;
   position: relative;
   padding-left: 2.8em;
@@ -195,7 +195,7 @@ nav .heading {
 }
 
 .recipe:hover, .contents-list:hover {
-  background-color: #88d0c7; /* changes color of receipe box when you hover over it */
+  background-color: #F4A698; /* changes color of receipe box when you hover over it */
 }
 
 .recipe:before {
@@ -225,7 +225,7 @@ nav .heading {
 .codeblock {
   font-family: monospace
   padding: 2px 4px;
-  color: #5e9789;
+  color: #004040;
   background-color: #efeced;
   border-radius: 4px;
 }
@@ -235,15 +235,15 @@ nav .heading {
 }
 
 .footnote {
-  font-size: 90%;
+  font-size: 40%;
 }
 
 .well {
   padding: 1em;
   margin-bottom: 0.5em;
   background-color: #dff6ef; /* changes the background color of the inside of the box */
-  border: 4px solid #a2f9c6; /* changes color of the border */
-  border-radius: 8px;
+  border: 4px solid #A7DD9E; /* changes color of the border */
+  border-radius: 20px; /* makes the edges of all the boxes rounder or squarer */
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
 }
 
