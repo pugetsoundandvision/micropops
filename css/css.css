@@ -52,7 +52,7 @@ html, body {
 
 @media only screen and (min-width: 1000px) {
   .grid {
-    grid-gap: 1rem;
+    grid-gap: 10rem;
     grid-template-columns: 25% auto;
     grid-template-areas:
     "header  header"
