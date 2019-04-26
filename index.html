@@ -117,28 +117,27 @@ done</code></p>
       </dl><p class="link"></p>
     </div>
     <!-- Rewrap DV -->
-		$$$$$$$$$$$$$$$$$$
+
+
 	  </div>
 	    <div class="well">
 	    <h2 id="transcode">Transcode a Video</h2>
 	   <!-- Begins Transcode -->
-	    <label class="recipe" for="MOV to MKV">Transcode an MOV to MKC</label>
-	    <input type="checkbox" id="videoaip_loop">
+	    <label class="recipe" for="MOV_to_MKV">Transcode an MOV to MKV</label>
+	    <input type="checkbox" id="MOV_to_MKV">
 	    <div class="hiding">
-	            <h3>Creating a loop with VideoAIP</h3>
-	      <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
-				<p><code>#!/bin/bash<br>
-				while read TARGET<br>
-				do videoaip -l auto "$TARGET" &lt;/dev/null<br>
-				done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv')</code></p>
-				<p>VideoAIP will try to process any files that it comes across. To ensure VideoAIP only processes the file extensions you've defined, you can replace the last line of the script with:<br>
-					<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov')</code></p>
-					<p>This command will find all .mkv, .dv, and .mov files in the defined directory.</p>
+				<h3>Transcode an MOV to MKV</h3>
+	      <p><code>ffmpeg -i /PATH/TO/input_file.MOV -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le /PATH/TO/output_file.MKV</code></p>
+				<p>To run this script as a loop, first <code>cd</code> into the directory holding the .MOVs you want to transcode.<br>
+					Then, execute the following:</p>
+					<p><code>#!/bin/bash<br>
+					for i in *.mov;<br>
+					do ffmpeg -i ${i} -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le ${i%.*}.mkv;<br>
+					done</code></p>
 	    </div>
 	    <!-- ends Transcode -->
 		
-		
-		$$$$$$$$$$$$$$$$$$
+
   </div>
     <div class="well">
     <h2 id="trim">Trim a video</h2>
