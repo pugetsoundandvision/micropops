@@ -198,7 +198,7 @@ done</code></p>
       <p>To use crontab-ui, first install <code>node</code> using:<br><code>brew install node</code></p>
 			<p>Then, install <code>crontab-ui</code> using:<br><code>npm -install -g crontab-ui</code></p>
 			<p><strong>You may need to use <code>sudo</code> when running the command above.</strong></p>
-			<p>From the terminal, run <code>crontab-ui</code></p>
+			<p><strong>To use:</strong> From the terminal, run <code>crontab-ui</code></p>
 	  <p>You will see the following output:<br>
 <code>Node version: [CURRENT VERSION]<br>
 Crontab UI is running at http://[IP ADDRESS]</code></p>
@@ -225,10 +225,30 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 <code>30 2 * * * [command]</code>
 <p>This will run once a month, on the second day of the month at midnight (i.e. January 2nd 12:00am, February 2nd 12:00am etc.):<br>
 <code>0 0 2 * * [command]</code>
-
+<p>If you need help generating the crontab syntax, try using <a href="http://corntab.com/" target="_blank">Corntab.</a></p>
       <p class="link"></p>
-    </div>
+</div>
     <!-- ends NTSC to H.264 -->
+		<label class="recipe" for="Save_start_modify">Saving, Starting, and Modifying Cron Jobs</label>
+		    <input type="checkbox" id="Save_start_modify">
+		    <div class="hiding">	
+			<p>Here is the format for a simple Cron Job:<br>
+			<code>0 22 * * * /Users/MIPoPS/Desktop/BackUp.sh</code>
+			<p>The first part is <code>0 22 * * *</code> This is where we schedule the timer. This job will run at 10 pm every evening.<br>The rest of the line is the command as it would run from the command line. This job would run the BackUp shell script from MIPoPS desktop.</p>
+			<p>Each asterix represents a unit of time, as follows:<br>
+		<code><small>Minute(0-59) Hour(0-24) Day_of_month(1-31) Month(1-12) Day_of_week(0-6)</small></code>
+		<p><strong>Use MILITARY TIME!</p></strong>
+		<p>This cron job will run at minute zero, every hour (i.e. an hourly cron job):<br>
+		<code>0 * * * * [command]</code>
+		<p>This is also an hourly cron job but run at minute 15 instead (i.e. 00:15, 01:15, 02:15 etc.):<br>
+		<code>15 * * * * [command]</code>
+		<p>This will run once a day, at 2:30am:<br>
+		<code>30 2 * * * [command]</code>
+		<p>This will run once a month, on the second day of the month at midnight (i.e. January 2nd 12:00am, February 2nd 12:00am etc.):<br>
+		<code>0 0 2 * * [command]</code>
+
+		      <p class="link"></p>
+		    </div>
   </div><!-- ends "content" -->
 
 <!-- sample example -->
