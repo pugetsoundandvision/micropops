@@ -234,19 +234,11 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		    <div class="hiding">	
 			<p>From the Crontab-ui page, click <strong>New</strong> to describe and create new job. Here is an example of a job that would run the shell script "MH_to_HD_sync.sh" at 6:00am daily.</p>
 			<img src="img/Crontab_UI.png" style="width:55%;height:55%;">
-			<p>The first part is <code>0 22 * * *</code> This is where we schedule the timer. This job will run at 10 pm every evening.<br>The rest of the line is the command as it would run from the command line. This job would run the BackUp shell script from MIPoPS desktop.</p>
-			<p>Each asterix represents a unit of time, as follows:<br>
-		<code><small>Minute(0-59) Hour(0-24) Day_of_month(1-31) Month(1-12) Day_of_week(0-6)</small></code>
-		<p><strong>Use MILITARY TIME!</p></strong>
-		<p>This cron job will run at minute zero, every hour (i.e. an hourly cron job):<br>
-		<code>0 * * * * [command]</code>
-		<p>This is also an hourly cron job but run at minute 15 instead (i.e. 00:15, 01:15, 02:15 etc.):<br>
-		<code>15 * * * * [command]</code>
-		<p>This will run once a day, at 2:30am:<br>
-		<code>30 2 * * * [command]</code>
-		<p>This will run once a month, on the second day of the month at midnight (i.e. January 2nd 12:00am, February 2nd 12:00am etc.):<br>
-		<code>0 0 2 * * [command]</code>
-
+			<p>Hit <strong>"Save"</strong> when you're finished. Then, click <strong>"Save to crontab"</strong>. This schedules the job. It will now run at the appointed time.</p>
+		<p>To run the job immediately, click <strong>"Run"</strong>.</p>
+		<p>To stop the job from running, click <strong>"Stop"</strong>, then click <strong>"Save to crontab"</strong>.</p>
+		<p>To re-schedule (or resume) a job, click <strong>"Start"</strong>, then click <strong>"Save to crontab"</strong>.</p>
+		<p>To see what jobs are scheduled to run, from the terminal, run <code>crontab -e</code>. You'll see a list of all jobs that are saved to the crontab.</p>
 		      <p class="link"></p>
 		    </div>
   </div><!-- ends "content" -->
