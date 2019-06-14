@@ -211,7 +211,7 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 <label class="recipe" for="creat_cron">Creating Cron Jobs</label>
     <input type="checkbox" id="creat_cron">
     <div class="hiding">	
-	<p>Here is the format for a simple Cron Job:<br>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the format for a simple Cron Job:<br>
 	<code>0 22 * * * /Users/MIPoPS/Desktop/BackUp.sh</code>
 	<p>The first part is <code>0 22 * * *</code> This is where we schedule the timer. This job will run at 10 pm every evening.<br>The rest of the line is the command as it would run from the command line. This job would run the BackUp shell script from MIPoPS desktop.</p>
 	<p>Each asterix represents a unit of time, as follows:<br>
@@ -232,6 +232,8 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		<label class="recipe" for="Save_start_modify">Saving, Starting, and Modifying Cron Jobs</label>
 		    <input type="checkbox" id="Save_start_modify">
 		    <div class="hiding">	
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the layout of the Crontab-ui website.</p>
+			<p><img src="img/Crontab_menu.png" style="width:100%;height:100%;"></p>
 			<p>From the Crontab-ui page, click <strong>New</strong> to describe and create new job. Here is an example of a job that would run the shell script "MH_to_HD_sync.sh" at 6:00am daily.</p>
 			<img src="img/Crontab_UI.png" style="width:55%;height:55%;">
 			<p>Hit <strong>"Save"</strong> when you're finished. Then, click <strong>"Save to crontab"</strong>. This schedules the job. It will now run at the appointed time.</p>
