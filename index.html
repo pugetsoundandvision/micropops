@@ -25,7 +25,7 @@
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
 		<a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
-    <a href="#hiddenfiles"><div class="contents-list">Hidden Files</div></a>
+    <a href="#hiddenfiles"><div class="contents-list">Dealing with hidden files</div></a>
   </nav>
 
   <div class="content">
@@ -272,6 +272,12 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 <p>In the terminal, <code>cd</code> to the directory you want to examine. Then, run:<p>
 <p><code>find $PWD -iname "*._*"</code></p>
 <p>This will list all of the files in the directory that begin with "._". The asterisk represents a wildcard.</p>
+<br>
+<p><strong>To see them in the Finder window (on a Mac):</strong></p>
+<p>In the terminal run:<p>
+<p><code>defaults write com.apple.finder AppleShowAllFiles true; killall Finder</code></p>
+<p>The first part of this command changes the settings within macOS to show all files. The second part restarts the Finder.</p>
+<p>To reverse this command, replace <code>true</code> with <code>false</code>, then run.</p>
 	    </div><!-- ends "content" -->
 
 <!-- sample example -->
