@@ -77,9 +77,10 @@ done < <(find "$PWD" -iname "*.mp4")</code></p>
       <input type="checkbox" id="streaming-saving">
       <div class="hiding">
         <p>This script runs a loop that identifies all MP4s in a directory, then moves them into directories that have the same name.</p>
-		<p>At MIPoPS, this is useful for moving all access copies into their home directories..</P>
-		<p><code>cd EXAMPLE/PATH/TO/TARGET/DIR</code><p>
-		<p>At MIPoPS, this would usually be: <code>cd /MIPoPS/Desktop/PIs/Institution1</code></p>
+		<p>At MIPoPS, this is useful for moving all access copies into their respective directories. For example, <strong>SMA_5795.mp4</strong> would be moved into the directory <strong>SMA_5795</strong></P>
+		<p>First, run: <code>cd /PATH/TO/TARGET/DIR</code><p>
+		<p>At MIPoPS, this might look like: <code>cd /MIPoPS/Desktop/Partner1</code></p>
+	<p>Next, run the following shell script:<p>
         <p><code>#!/bin/bash<br>
 for f in *.mp4; do<br>
   [[ -f "$f" ]] || continue<br>
