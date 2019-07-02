@@ -278,7 +278,13 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 <p><code>defaults write com.apple.finder AppleShowAllFiles true; killall Finder</code></p>
 <p>The first part of this command changes the settings within macOS to show all files. The second part restarts the Finder.</p>
 <p>To reverse this command, replace <code>true</code> with <code>false</code>, then run.</p>
-	    </div><!-- ends "content" -->
+	    <label class="recipe" for="Del_Hide">Deleting hidden files</label>
+	    <input type="checkbox" id="Del_Hide">
+	    <div class="hiding">
+				<h3>Deleting hidden files</h3>
+<p><strong>In the terminal / command line (on a Mac):</strong></p>
+<p>Run: <code>find $PWD -iname "*._*" -delete</code></p>
+</div><!-- ends "content" -->
 
 <!-- sample example -->
 <!--   <label class="recipe" for="*****unique name*****">*****Title****</label>
