@@ -25,6 +25,7 @@
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
 		<a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
+    <a href="#hiddenfiles"><div class="contents-list">Scheduling Cron Jobs</div></a>
   </nav>
 
   <div class="content">
@@ -256,7 +257,22 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		<p>To see what jobs are scheduled to run, from the terminal, run <code>crontab -e</code>. You'll see a list of all jobs that are saved to the crontab.</p>
 		      <p class="link"></p>
 		    </div>
-  </div><!-- ends "content" -->
+  </div>
+
+</div>
+	    <div class="well">
+	    <h2 id="hiddenfiles">Dealing with hidden files</h2>
+	   <!-- Begins Hidden Files -->
+	    <label class="recipe" for="Find_Hide">Finding hidden files</label>
+	    <input type="checkbox" id="Find_Hide">
+	    <div class="hiding">
+				<h3>Finding Hidden Files</h3>
+	      <p>Occassionally you may encounter hidden files, especially on hard drives that move between Mac and PC environments. Ususally they don't present a problem. In case they do (like when verifying the contents of a <a href="=https://github.com/LibraryOfCongress/bagit-java">bag</a>), here are two ways to find them:</p>
+<p><strong>To see them listed in via the terminal / command line (on a Mac):</strong></p>
+<p>In the terminal, <code>cd</code> to the directory you want to examine. Then, run:<p>
+<p><code>find $PWD -iname "*._*"</code></p>
+<p>This will list all of the files in the directory that begin with "._". The asterisk represents a wildcard.</p>
+	    </div><!-- ends "content" -->
 
 <!-- sample example -->
 <!--   <label class="recipe" for="*****unique name*****">*****Title****</label>
