@@ -63,10 +63,11 @@
        <p>This is a loop script that will find all .MP4s in a directory and copy them into a new directory elsewhere. Useful for copying all access files from a directory and putting them into an Access copies folder.</p>
 	   <p>First, <code>cd</code> into the directory holding the access files you want to copy. At MIPoPS, this is usually the Participating Institutions directory.</p>
 	   <p><code>cd /MIPoPS/Desktop/PIs/Institution1</code><br>
-	   <p><code>#!/bin/bash<br>while read TARGET<br>
+	   <p>Next, run the following shell script:<p>
+<code>#!/bin/bash<br>while read TARGET<br>
 do rsync -av "$TARGET" /EXAMPLE/PATH/ACCESSFILES<br>
 done < <(find "$PWD" -iname "*.mp4")</code></p>
- <p>This script could be modified to look for and move other file types by modifing the input in <code>"*.mp4"</code>. Replacing that with <code>"*.dv"</code> would return all files ending in .dv. <code>"SAM_2019_*.*"</code> would move all files that have the naming convention "SAM_2019" of any file type. The asterix is a wildcard.</P>
+ <p>This script could be modified to look for and move other file types by modifing the input between the final quotation marks in the last line. Replacing <code>"*.mp4"</code> with <code>"*.dv"</code> would return all files ending in .dv. Replacing <code>"*.mp4"</code> with <code>"SAM_2019_*.*"</code> would move all files that have the naming convention "SAM_2019" of any file type. The asterix is a wildcard.</P>
         </dl>
       </div>
       <!-- Copy all access files into a new directory -->
@@ -278,15 +279,16 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 <p><code>defaults write com.apple.finder AppleShowAllFiles true; killall Finder</code></p>
 <p>The first part of this command changes the settings within macOS to show all files. The second part restarts the Finder.</p>
 <p>To reverse this command, replace <code>true</code> with <code>false</code>, then run.</p>
-		    </div>
+</div>
 	    <label class="recipe" for="Del_Hide">Deleting hidden files</label>
 	    <input type="checkbox" id="Del_Hide">
 	    <div class="hiding">
 				<h3>Deleting hidden files</h3>
 <p><strong>In the terminal / command line (on a Mac):</strong></p>
 <p>Run: <code>find $PWD -iname "*._*" -delete</code></p>
-		    </div>
-		    </div><!-- ends "content" -->
+</div>
+</div>
+<!-- ends "content" -->
 
 <!-- sample example -->
 <!--   <label class="recipe" for="*****unique name*****">*****Title****</label>
