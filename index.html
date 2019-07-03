@@ -100,7 +100,6 @@ done</code></p>
     <label class="recipe" for="basic-rewrap">Basic rewrap command</label>
     <input type="checkbox" id="basic-rewrap">
     <div class="hiding">
-      <h3>Rewrap a file</h3>
       <p><code>ffmpeg -i <em>/PATH/TO/input_file.ext</em> -c copy -map 0 <em>/PATH/TO/output_file.ext</em></code></p>
       <p>This script will rewrap a video file. It will create a new video video file where the inner content (the video, audio, and subtitle data) of the original file is unchanged, but these streams are rehoused within a different container format.</p>
       <dl>
@@ -120,7 +119,6 @@ done</code></p>
     <label class="recipe" for="rewrap-dv">Rewrap DV video to .dv file</label>
     <input type="checkbox" id="rewrap-dv">
     <div class="hiding">
-      <h3>Rewrap DV video to .dv file</h3>
       <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -f rawvideo -c:v copy <em>/PATH/TO/output_file.dv</em></code></p>
       <p>This script will take a video that is encoded in the <a href="https://en.wikipedia.org/wiki/DV" target="_blank">DV Codec</a> but wrapped in a different container (such as MOV) and rewrap it into a raw DV file (with the .dv extension). Since DV files potentially contain a great deal of provenance metadata within the DV stream, it is necessary to rewrap files in this method to avoid unintentional stripping of this metadata.</p>
       <dl>
@@ -143,7 +141,6 @@ done</code></p>
 	    <label class="recipe" for="MOV_to_MKV">Transcode an MOV to MKV</label>
 	    <input type="checkbox" id="MOV_to_MKV">
 	    <div class="hiding">
-				<h3>Transcode an MOV to MKV</h3>
 	      <p><code>ffmpeg -i /PATH/TO/input_file.MOV -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le /PATH/TO/output_file.MKV</code></p>
 				<p>To run this script as a loop, first <code>cd</code> into the directory holding the .MOVs you want to transcode.<br>
 					Then, execute the following:</p>
@@ -162,7 +159,6 @@ done</code></p>
     <label class="recipe" for="trim_video">Trim video without re-encoding</label>
     <input type="checkbox" id="trim_video">
     <div class="hiding">
-            <h3>Trim a video without re-encoding</h3>
       <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -ss 00:02:00 -to 00:55:00 -c copy -map 0 <em>/PATH/TO/output_file</em></code></p>
       <p>This command allows you to create an excerpt from a file without re-encoding the audiovisual data.</p>
       <dl>
@@ -191,7 +187,6 @@ done</code></p>
     <label class="recipe" for="videoaip_loop">Creating a loop with VideoAIP</label>
     <input type="checkbox" id="videoaip_loop">
     <div class="hiding">
-            <h3>Creating a loop with VideoAIP</h3>
       <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
 			<p><code>#!/bin/bash<br>
 			while read TARGET<br>
@@ -211,8 +206,8 @@ done</code></p>
     <label class="recipe" for="crontab_ui">Cron Job Manager</label>
     <input type="checkbox" id="crontab_ui">
     <div class="hiding">
-      <h3>Using Crontab-UI</h3>
-      <p>To use crontab-ui, first install <code>node</code> using:<br><code>brew install node</code></p>
+      <h4>Using Crontab-UI</h4>
+      <p>To use <a href="https://github.com/alseambusher/crontab-ui">crontab-ui</a>, first install <code>node</code> using:<br><code>brew install node</code></p>
 			<p>Then, install <code>crontab-ui</code> using:<br><code>npm -install -g crontab-ui</code></p>
 			<p><strong>You may need to use <code>sudo</code> when running the command above.</strong></p>
 			<p><strong>To use:</strong> From the terminal, run <code>crontab-ui</code></p>
@@ -269,7 +264,6 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 	    <label class="recipe" for="Find_Hide">Finding hidden files</label>
 	    <input type="checkbox" id="Find_Hide">
 	    <div class="hiding">
-				<h3>Finding Hidden Files</h3>
 	      <p>Occassionally you may encounter hidden files, especially on hard drives that move between Mac and PC environments. Ususally they don't present a problem. In case they do (like when verifying the contents of a <a href="https://github.com/LibraryOfCongress/bagit-java">bag</a>), here are two ways to find them:</p>
 <p><strong>To see them listed in the terminal / command line (on a Mac):</strong></p>
 <p>In the terminal, <code>cd</code> to the directory you want to examine. Then, run:<p>
@@ -285,7 +279,6 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 	    <label class="recipe" for="Del_Hide">Deleting hidden files</label>
 	    <input type="checkbox" id="Del_Hide">
 	    <div class="hiding">
-				<h3>Deleting hidden files</h3>
 <p><strong>In the terminal / command line (on a Mac):</strong></p>
 <p>Run: <code>find $PWD -iname "*._*" -delete</code></p>
 </div>
