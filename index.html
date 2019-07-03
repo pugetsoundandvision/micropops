@@ -320,7 +320,7 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		<p>UNDER CONSTRUCTION</p>
 		</div>
 
-	<label class="recipe" for="writelto">Writing your data to tape</label>
+	<label class="recipe" for="writelto">Write your data to tape</label>
     <input type="checkbox" id="writelto">
 	    <div class="hiding">
 		<h4>Mounting the tape</h4>
@@ -335,13 +335,17 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		<p>This can take a LOT of time, depending on the amount of data you're writing to the tape. It can also be quite loud, as the deck and the tape chug along.</p>
 		</div>
 	
-	<label class="recipe" for="confirmlto">Confirming the data transfer</label>
+	<label class="recipe" for="confirmlto">Confirm the data transfer</label>
     <input type="checkbox" id="confirmlto">
 	    <div class="hiding">
-		<p>ltomanifest -c</p>
+		<p>Re-mount the tape using the instructions above for <code>mountlto</code>.</p>
+		<p>Open a second terminal window.Run:</p>
+		<p><code>ltomanifest -c /PATH/TO/MANIFEST/ON/TAPE/tapemanifest.txt</code></p>
+		<p>The option <code>-c</code> = confirm manifest. This makes sure that what was transferred to the tape is exactly the same as what you started with. This can take a significant amount of time, depending on the amount of data you're writing to the tape.</p>
+		<p>Once the manifest has confirmed, the tape will unmount and eject itself.</p>
 		</div>
 		
-	<label class="recipe" for="readlto">Pulling data from LTO</label>
+	<label class="recipe" for="readlto">Pull data from LTO</label>
     <input type="checkbox" id="readlto">
 	    <div class="hiding">
 		<p>mountlto</p>
