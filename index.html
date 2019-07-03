@@ -292,7 +292,7 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 </div>
 
 <div class="well">
-   <h2 id="shell">Using Linear Tape Open (LTO) -- UNDER CONSTRUCTION --</h2>
+    <h2 id="shell">Using Linear Tape Open (LTO) -- UNDER CONSTRUCTION --</h2>
     <label class="recipe" for="lto_install">Installation</label>
     <input type="checkbox" id="lto_install">
 	    <div class="hiding">
@@ -300,10 +300,10 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		<hr size="5" width="20%" color="#f88379" align="left">
 		<p>First, install <a href="https://brew.sh/"><strong>Homebrew</strong></a> using the instructions provided on their website (it's easy!). You may need to work with your systems or IT department to ensure you've got the necessary permissions to install Homebrew.</p>
 		<hr size="5" width="20%" color="#f88379" align="left">
-		<p>Next, you'll be tapping repositories from AMIA Opensource and Puget Sound and Vision. In the terminal, run:</p>
+		<p>Next, you'll be tapping repositories from <a href="https://github.com/amiaopensource">AMIA Open Source</a> and <a href="https://github.com/pugetsoundandvision">Puget Sound and Vision</a>. In the terminal, run:</p>
 		<p><code>brew tap amiaopensource/amiaos</code></p> 
 		<p><code>brew tap pugetsoundandvision/pugetsoundandvision</code></p>
-		<p>Now, you'll install ltopers and ltotools. In the terminal, run:</p>
+		<p>Now, you'll install <a href="https://github.com/amiaopensource/ltopers">ltopers</a> and <a href="https://github.com/pugetsoundandvision/lto_tools">ltotools</a>. In the terminal, run:</p>
 		<code>brew install ltopers</code></p>
 		<p><code>brew install ltotools</code></p>
 	    </div>
@@ -311,20 +311,31 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 	<label class="recipe" for="formatlto">Format your tape</label>
     <input type="checkbox" id="formatlto">
 	    <div class="hiding">
-		<p>Formatting, serial assignment</p>
+		<p>LTO tapes need to be formatted before they can be used. In the terminal, run the following command: <code>formatlto</code>. You will be prompted to enter the tape serial identifier. The tape serial format is exactly 6 capital letters and/or numbers (e.g. A00001, A00002, B00001, B00002, etc.) Remember to physically label your tape with the tape serial number!</p>
 		</div>
 	
 	<label class="recipe" for="ltomanifest">Create a manifest</label>
     <input type="checkbox" id="ltomanifest">
 	    <div class="hiding">
-		<p>ltomanifest -m [input]</p>
+		<p>Before you write to tape, you'll need to create a manifest of the content you'll be migrating. To do this, group all of your files into a single location. This can be a directory or a volume.</p>
+		<p>To create the manifest, run:</p> <code>ltomanifest -m /PATH/TO/DIRECTORY</code></p>
+		<p>The option<code>-m</code>= make manifest.</p>
+		<p>Creating the manifest can take a significant amount of time, especially if you're writing a large set of files.</p>
 		</div>
 
 	<label class="recipe" for="writelto">Writing your data to tape</label>
     <input type="checkbox" id="writelto">
 	    <div class="hiding">
-		<p>mountlto</p>
-		<p>writelto</p>
+		<h3>>Mounting the tape</h3>
+		<p>Before you can write, you'll need to mount the tape. Put the tape that you want to write to into the deck (you don't need to push it in all the way).</p>
+		<p>Then, run:</p><p><code>mountlto</code></p>
+		<p>You'll be prompted to enter the tape serial number. The tape should then mount into the deck. The deck can be pretty loud - <strong>don't be alarmed!</strong> <p>Once it's fully mounted, you should see the tape appear on the desktop, like you would see an external drive. You can open this in the finder window. Be aware that once you've written files to the tape, it can take the computer a long  time to open them because it has to physically reel through the spool of magnetic tape.</p>
+		<hr size="5" width="20%" color="#f88379" align="left">
+		<h3>Writing data to the tape</h3>
+		<p>Now, open a second terminal window.
+		<p>Run:</p><p><code>writelto -t TAPESERIALNUMBER /PATH/TO/DIRECTORY</code></p>
+		<p>The path above should point to the directory of files you're going to transfer (which will also contain the manifest you made earlier).</p>
+		<p>This can take a LOT of time, depending on the amount of data you're writing to the tape. It can also be quite loud, as the deck and the tape chug along.</p>
 		</div>
 	
 	<label class="recipe" for="confirmlto">Confirming the data transfer</label>
