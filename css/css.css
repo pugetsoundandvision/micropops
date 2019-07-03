@@ -53,7 +53,7 @@ html, body {
 @media only screen and (min-width: 1000px) {
   .grid {
     grid-gap: 1rem; /* INCREASES SPACE BETWEEN SIDE BAR AND MAIN COLUMN */
-    grid-template-columns: 20% auto; /* CHANGES WIDTH OF SIDEBAR*/
+    grid-template-columns: 25% auto; /* CHANGES WIDTH OF SIDEBAR*/
     grid-template-areas:
     "header  header"
     "sidebar content"
