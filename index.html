@@ -18,7 +18,7 @@
   <nav class="sidebar well">
     <h2 class="heading">Table of Contents</h2>
     <a href="#about"><div class="contents-list">MIPoPS Microservices</div></a>
-		<a href="#shell"><div class="contents-list">Creating Shell Script</div></a>
+		<a href="#shell"><div class="contents-list">Creating Shell Scripts</div></a>
     <a href="#move"><div class="contents-list">Moving and Copying Files</div></a>
     <a href="#rewrap"><div class="contents-list">Rewrap a video</div></a>
 		<a href="#transcode"><div class="contents-list">Transcode a video</div></a>
@@ -26,6 +26,7 @@
 		<a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
     <a href="#hiddenfiles"><div class="contents-list">Dealing with hidden files</div></a>
+	<a href="#LTO_basics"><div class="contents-list">LTO</div></a>
   </nav>
 
   <div class="content">
@@ -288,6 +289,48 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 <p><strong>In the terminal / command line (on a Mac):</strong></p>
 <p>Run: <code>find $PWD -iname "*._*" -delete</code></p>
 </div>
+</div>
+
+<div class="well">
+    <h2 id="shell">Using Linear Tape Open (LTO)</h2>
+    <label class="recipe" for="lto_install">Installation</label>
+    <input type="checkbox" id="lto_install">
+	    <div class="hiding">
+		<p>Homebrew, tapping AMIAOS and Pugetsoundandvision, install ltopers and ltotools</p>
+	    </div>
+	
+	<label class="recipe" for="formatlto">Format your tape</label>
+    <input type="checkbox" id="formatlto">
+	    <div class="hiding">
+		<p>Formatting, serial assignment</p>
+		</div>
+	
+	<label class="recipe" for="ltomanifest">Create a manifest</label>
+    <input type="checkbox" id="ltomanifest">
+	    <div class="hiding">
+		<p>ltomanifest -m [input]</p>
+		</div>
+
+	<label class="recipe" for="writelto">Writing your data to tape</label>
+    <input type="checkbox" id="writelto">
+	    <div class="hiding">
+		<p>mountlto</p>
+		<p>writelto</p>
+		</div>
+	
+	<label class="recipe" for="confirmlto">Confirming the data transfer</label>
+    <input type="checkbox" id="confirmlto">
+	    <div class="hiding">
+		<p>ltomanifest -c</p>
+		</div>
+		
+	<label class="recipe" for="readlto">Pulling data from LTO</label>
+    <input type="checkbox" id="readlto">
+	    <div class="hiding">
+		<p>mountlto</p>
+		<p>Navigate to volume in Finder</p>
+		</div>
+		
 </div>
 <!-- ends "content" -->
 
