@@ -314,26 +314,28 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 		<p>LTO tapes need to be formatted before they can be used.</p>
 		<p>In the terminal, run the following command: <code>formatlto</code></p>
 		<p>You will be prompted to enter the tape serial identifier. The tape serial format is exactly 6 capital letters and/or numbers (e.g. A00001, A00002, B00001, B00002, etc.) Remember to physically label your tape with the tape serial number!</p>
+		<p>UNDER CONSTRUCTION</p>
 		</div>
 	
 	<label class="recipe" for="ltomanifest">Create a manifest</label>
     <input type="checkbox" id="ltomanifest">
 	    <div class="hiding">
-		<p>Before you write to tape, you'll need to create a manifest of the content you'll be migrating. To do this, group all of your files into a single location. This can be a directory or a volume.</p>
+		<p>Before you write to tape, you'll need to create a manifest of the content you'll be transferring. To do this, group all of your files into a single location. This can be a directory or a volume.</p>
 		<p>To create the manifest, run:</p> <code>ltomanifest -m /PATH/TO/DIRECTORY</code></p>
-		<p>The option<code>-m</code>= make manifest.</p>
+		<p>The option<code>-m</code> = make manifest.</p>
 		<p>Creating the manifest can take a significant amount of time, especially if you're writing a large set of files.</p>
+		<p>UNDER CONSTRUCTION</p>
 		</div>
 
 	<label class="recipe" for="writelto">Writing your data to tape</label>
     <input type="checkbox" id="writelto">
 	    <div class="hiding">
-		<h3>>Mounting the tape</h3>
+		<h4>Mounting the tape</h4>
 		<p>Before you can write, you'll need to mount the tape. Put the tape that you want to write to into the deck (you don't need to push it in all the way).</p>
 		<p>Then, run:</p><p><code>mountlto</code></p>
 		<p>You'll be prompted to enter the tape serial number. The tape should then mount into the deck. The deck can be pretty loud - <strong>don't be alarmed!</strong> <p>Once it's fully mounted, you should see the tape appear on the desktop, like you would see an external drive. You can open this in the finder window. Be aware that once you've written files to the tape, it can take the computer a long  time to open them because it has to physically reel through the spool of magnetic tape.</p>
 		<hr size="5" width="20%" color="#f88379" align="left">
-		<h3>Writing data to the tape</h3>
+		<h4>Writing data to the tape</h4>
 		<p>Now, open a second terminal window.
 		<p>Run:</p><p><code>writelto -t TAPESERIALNUMBER /PATH/TO/DIRECTORY</code></p>
 		<p>The path above should point to the directory of files you're going to transfer (which will also contain the manifest you made earlier).</p>
