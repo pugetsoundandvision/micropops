@@ -292,11 +292,20 @@ Crontab UI is running at http://[IP ADDRESS]</code></p>
 </div>
 
 <div class="well">
-    <h2 id="shell">Using Linear Tape Open (LTO) -- UNDER CONSTRUCTION --</h2>
+   <h2 id="shell">Using Linear Tape Open (LTO) -- UNDER CONSTRUCTION --</h2>
     <label class="recipe" for="lto_install">Installation</label>
     <input type="checkbox" id="lto_install">
 	    <div class="hiding">
-		<p>Homebrew, tapping AMIAOS and Pugetsoundandvision, install ltopers and ltotools</p>
+		<p><strong>The instructions provided are for the macOS!</strong></p>
+		<hr size="5" width="20%" color="#f88379" align="left">
+		<p>First, install <a href="https://brew.sh/"><strong>Homebrew</strong></a> using the instructions provided on their website (it's easy!). You may need to work with your systems or IT department to ensure you've got the necessary permissions to install Homebrew.</p>
+		<hr size="5" width="20%" color="#f88379" align="left">
+		<p>Next, you'll be tapping repositories from AMIA Opensource and Puget Sound and Vision. In the terminal, run:</p>
+		<p><code>brew tap amiaopensource/amiaos</code></p> 
+		<p><code>brew tap pugetsoundandvision/pugetsoundandvision</code></p>
+		<p>Now, you'll install ltopers and ltotools. In the terminal, run:</p>
+		<code>brew install ltopers</code></p>
+		<p><code>brew install ltotools</code></p>
 	    </div>
 	
 	<label class="recipe" for="formatlto">Format your tape</label>
