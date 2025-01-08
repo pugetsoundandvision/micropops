@@ -7,7 +7,7 @@
   <link rel="icon" href="img/vhs.ico">
   <script src="js/jquery.min.js"></script>
   <script src="js/js.js"></script>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
 </head>
 
 <body>
@@ -18,15 +18,16 @@
   <nav class="sidebar well">
     <h2 class="heading">Table of Contents</h2>
     <a href="#about"><div class="contents-list">MIPoPS Microservices</div></a>
-		<a href="#shell"><div class="contents-list">Creating Shell Scripts</div></a>
+    <a href="#shell"><div class="contents-list">Creating Shell Scripts</div></a>
     <a href="#move"><div class="contents-list">Moving and Copying Files</div></a>
     <a href="#rewrap"><div class="contents-list">Rewrap a video</div></a>
-		<a href="#transcode"><div class="contents-list">Transcode a video</div></a>
+    <a href="#transcode"><div class="contents-list">Transcode a video</div></a>
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
-		<a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
+    <a href="#mediainfo"><div class="contents-list">Media info</div></a>
+    <a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
     <a href="#hiddenfiles"><div class="contents-list">Dealing with hidden files</div></a>
-	<a href="#LTO_basics"><div class="contents-list">LTO</div></a>
+    <a href="#LTO_basics"><div class="contents-list">LTO</div></a>
   </nav>
 
   <div class="content">
@@ -34,354 +35,437 @@
       <p> <img src="img/Micropops_logo.png" style="width:80%;height:80%;"></p>
       <div align="center"><h2 class="heading" id="about">MIPoPS Microservices</h2>
       <span class="intro-lead">One liners and automation tools from <a href="https://mipops.org" target="_blank">Moving Image Preservation of Puget Sound</a></span></div> 
-	  <p>This page is an evolving library of some of the most common commands used for manipulating digital objects at <a href="https://mipops.org" target="_blank">Moving Image Preservation of Puget Sound</a>.</p>
+      <p>This page is an evolving library of some of the most common commands used for manipulating digital objects at <a href="https://mipops.org" target="_blank">Moving Image Preservation of Puget Sound</a>.</p>
       <p>The following commands are primarily written in <a href="https://guide.bash.academy/inception/" target="_blank">bash</a>. We've also included the most common <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a> commands we use. FFmpeg is a powerful tool for manipulating audiovisual files. For an excellent, in-depth resource for using FFmpeg in the command line, check out <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank"> ffmprovsir</a>.</p>
       <p>Contributors: <a href="https://github.com/alavigne12" target="_blank">Ari Lavigne</a>, <a href="https://github.com/libbyhopfauf" target="_blank">Libby Hopfauf</a>, <a href="https://github.com/privatezero" target="_blank">Andrew Weaver</a>, and everyone who contributed to the ffmprovisor project (where the ffmpeg commands presented here were sourced).</p>
       <p class="license">
-       <div align="center"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons License" style="width:25%;height:25%;" src="img/cc-by_icon-svg.png"></a>
+        <div align="center"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons License" style="width:25%;height:25%;" src="img/cc-by_icon-svg.png"></a>
         This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</div>
       </p>
-	    <label class="recipe" for="about-us">About MIPoPS</label>
-	    <input type="checkbox" id="about-us">
-		    <div class="hiding">
-					<p><div class="video-container"><iframe width="1222" height="696" src="https://www.youtube.com/embed/cyucuzYfw5A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></p>
-						<p><b>Moving Image Preservation of Puget Sound</b> is a a non-profit formed in 2014 that enables archives, libraries, and museums, as well as arts, science and heritage organizations, to convert their legacy video recordings to digital formats, allowing new access to our region’s cultural heritage. The consortium was founded by Rachel Price, executive director; Anne Frantilla, City Archivist at Seattle Municipal Archives; Hannah Palin, Film Archives Specialist at the University of Washington Libraries, Special Collections; and Carol Shenk, formerly King County Archivist at King County Archives. After three years of planning, MIPoPS received its 501(c)(3) status in 2015. MIPoPS supports videotape digitization and preservation by heritage organizations with neither the resources nor expertise to address these at-risk materials.</p>
-				</div>
+      <label class="recipe" for="about-us">About MIPoPS</label>
+      <input type="checkbox" id="about-us">
+      <div class="hiding">
+        <p><div class="video-container"><iframe width="1222" height="696" src="https://www.youtube.com/embed/cyucuzYfw5A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></p>
+        <p><b>Moving Image Preservation of Puget Sound</b> is a a non-profit formed in 2014 that enables archives, libraries, and museums, as well as arts, science and heritage organizations, to convert their legacy video recordings to digital formats, allowing new access to our region’s cultural heritage. The consortium was founded by Rachel Price, executive director; Anne Frantilla, City Archivist at Seattle Municipal Archives; Hannah Palin, Film Archives Specialist at the University of Washington Libraries, Special Collections; and Carol Shenk, formerly King County Archivist at King County Archives. After three years of planning, MIPoPS received its 501(c)(3) status in 2015. MIPoPS supports videotape digitization and preservation by heritage organizations with neither the resources nor expertise to address these at-risk materials.</p>
+      </div>
     </div>
     
-	<div class="well">
-    <h2 id="shell">Creating Shell Scripts</h2>
-    <label class="recipe" for="shell-scripts">Saving commands as a shell script</label>
-    <input type="checkbox" id="shell-scripts">
-	    <div class="hiding">
-	    	<p>First, open <strong>TextMate</strong>. In the first line of the new document, copy and paste <code>#!/bin/bash</code>. This is called a <strong>shebang</strong>.</p>
-				<p>Next, either copy and paste in or type the command you'd like to run.</p>
-				<p>Finally, select <strong>"Save As"</strong> and make sure the file extension is <strong>.sh</strong>. Once you save the file, you should see a notificiation in TextMate telling you that the file is now executable.</p>
-				<p>To use a shell script, simply drag the file into the terminal and hit enter, or copy and past the file path location into the terminal and hit enter.</p>
-	    </div>
-		</div>
+    <div class="well">
+      <h2 id="shell">Creating Shell Scripts</h2>
+      <label class="recipe" for="shell-scripts">Saving commands as a shell script</label>
+      <input type="checkbox" id="shell-scripts">
+      <div class="hiding">
+        <p>First, open <strong>TextMate</strong>. In the first line of the new document, copy and paste <code>#!/bin/bash</code>. This is called a <strong>shebang</strong>.</p>
+	<p>Next, either copy and paste in or type the command you'd like to run.</p>
+	<p>Finally, select <strong>"Save As"</strong> and make sure the file extension is <strong>.sh</strong>. Once you save the file, you should see a notificiation in TextMate telling you that the file is now executable.</p>
+	<p>To use a shell script, simply drag the file into the terminal and hit enter, or copy and past the file path location into the terminal and hit enter.</p>
+      </div>
+    </div>
 		
-		<div class="well">
-    <h2 id="move">Moving and Copying Files</h2>
+    <div class="well">
+      <h2 id="move">Moving and Copying Files</h2>
+
       <!-- Copy all access files into new directory -->
       <label class="recipe" for="basic-structure">Copy all Access files into a new directory</label>
       <input type="checkbox" id="basic-structure">
       <div class="hiding">
-       <p>This is a loop script that will find all .MP4s in a directory and copy them into a new directory elsewhere. Useful for copying all access files from a directory and putting them into an Access copies folder.</p>
-	   <p>First, <code>cd</code> into the directory holding the access files you want to copy. At MIPoPS, this is usually the Participating Institutions directory.</p>
-	   <p><code>cd /MIPoPS/Desktop/PIs/Institution1</code><br>
-	   <p>Next, run the following shell script:<p>
-<code>#!/bin/bash<br>while read TARGET<br>
-do rsync -av "$TARGET" /EXAMPLE/PATH/ACCESSFILES<br>
-done < <(find "$PWD" -iname "*.mp4")</code></p>
- <p>This script could be modified to look for and move other file types by modifing the input between the final quotation marks in the last line. Replacing <code>"*.mp4"</code> with <code>"*.dv"</code> would return all files ending in .dv. Replacing <code>"*.mp4"</code> with <code>"SAM_2019_*.*"</code> would move all files that have the naming convention "SAM_2019" of any file type. The asterix is a wildcard.</P>
-        </dl>
+        <p>This is a loop script that will find all .MP4s in a directory and copy them into a new directory elsewhere. Useful for copying all access files from a directory and putting them into an Access copies folder.</p>
+	<p>First, <code>cd</code> into the directory holding the access files you want to copy. At MIPoPS, this is usually the Participating Institutions directory.</p>
+	<p><code>cd /MIPoPS/Desktop/PIs/Institution1</code><br>
+	<p>Next, run the following shell script:<p>
+        <code>#!/bin/bash<br>while read TARGET<br>
+        do rsync -av "$TARGET" /EXAMPLE/PATH/ACCESSFILES<br>
+        done < <(find "$PWD" -iname "*.mp4")</code></p>
+        <p>This script could be modified to look for and move other file types by modifing the input between the final quotation marks in the last line. Replacing <code>"*.mp4"</code> with <code>"*.dv"</code> would return all files ending in .dv. Replacing <code>"*.mp4"</code> with <code>"SAM_2019_*.*"</code> would move all files that have the naming convention "SAM_2019" of any file type. The asterix is a wildcard.</P>
       </div>
-      <!-- Copy all access files into a new directory -->
 
       <!-- Move all access files into their respective directories -->
       <label class="recipe" for="streaming-saving">Move all Access files into their respective directories</label>
       <input type="checkbox" id="streaming-saving">
       <div class="hiding">
         <p>This script runs a loop that identifies all MP4s in a directory, then moves them into directories that have the same name.</p>
-		<p>At MIPoPS, this is useful for moving all access copies into their respective directories. For example, <strong>SMA_5795.mp4</strong> would be moved into the directory <strong>SMA_5795</strong></P>
-		<p>First, run: <code>cd /PATH/TO/TARGET/DIR</code><p>
-		<p>At MIPoPS, this might look like: <code>cd /MIPoPS/Desktop/Partner1</code></p>
+	<p>At MIPoPS, this is useful for moving all access copies into their respective directories. For example, <strong>SMA_5795.mp4</strong> would be moved into the directory <strong>SMA_5795</strong></P>
+	<p>First, run: <code>cd /PATH/TO/TARGET/DIR</code><p>
+	<p>At MIPoPS, this might look like: <code>cd /MIPoPS/Desktop/Partner1</code></p>
 	<p>Next, run the following shell script:<p>
         <p><code>#!/bin/bash<br>
-for f in *.mp4; do<br>
-  [[ -f "$f" ]] || continue<br>
-  dir="${f%.*}"<br>
-  mv "$f" "$dir"<br>
-done</code></p>
+	for f in *.mp4; do<br>
+  	[[ -f "$f" ]] || continue<br>
+  	dir="${f%.*}"<br>
+  	mv "$f" "$dir"<br>
+	done</code></p>
       </div>
-      <!-- Move all Access files into their respective directories -->
     </div>
-
  
-    <div class="content">
     <div class="well">
-    <h2 id="rewrap">Change container (rewrap)</h2>
-    <!-- Basic rewrap command -->
-    <label class="recipe" for="basic-rewrap">Basic rewrap command</label>
-    <input type="checkbox" id="basic-rewrap">
-    <div class="hiding">
-      <p><code>ffmpeg -i <em>/PATH/TO/input_file.ext</em> -c copy -map 0 <em>/PATH/TO/output_file.ext</em></code></p>
-      <p>This script will rewrap a video file. It will create a new video video file where the inner content (the video, audio, and subtitle data) of the original file is unchanged, but these streams are rehoused within a different container format.</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>/PATH/TO/input_file.ext</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
-        <dt>-c copy</dt><dd>copy the streams directly, without re-encoding.</dd>
-        <dt>-map 0</dt><dd>map all streams of the input to the output.<br>
-        By default, FFmpeg will only map one stream of each type (video, audio, subtitles) to the output file. However, files may have multiple streams of a given type - for example, a video may have several audio tracks for different languages. Therefore, if you want to preserve all the streams in the original, it's necessary to use this option.</dd>
-        <dt><em>/PATH/TO/output_file.ext</em></dt><dd>path and name of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.<br>
-        The new container you are rewrapping to is defined by the filename extension used here, e.g. .mkv, .mp4, .mov.</dd>
-      </dl>
-	  <small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
-	  <p class="link"></p>
-    </div>
-    <!-- End Basic rewrap command -->
-    <!-- Rewrap DV -->
-    <label class="recipe" for="rewrap-dv">Rewrap DV video to .dv file</label>
-    <input type="checkbox" id="rewrap-dv">
-    <div class="hiding">
-      <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -f rawvideo -c:v copy <em>/PATH/TO/output_file.dv</em></code></p>
-      <p>This script will take a video that is encoded in the <a href="https://en.wikipedia.org/wiki/DV" target="_blank">DV Codec</a> but wrapped in a different container (such as MOV) and rewrap it into a raw DV file (with the .dv extension). Since DV files potentially contain a great deal of provenance metadata within the DV stream, it is necessary to rewrap files in this method to avoid unintentional stripping of this metadata.</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
-        <dt>-f rawvideo</dt><dd>this tells FFmpeg to pass the video stream as raw video data without remuxing. This step is what ensures the survival of embedded metadata versus a standard rewrap.</dd>
-        <dt>-c:v copy</dt><dd>copy the DV stream directly, without re-encoding.</dd>
-        <dt><em>/PATH/TO/output_file.dv</em></dt><dd>tells FFmpeg to use the DV wrapper for the output. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
-      </dl>
-	  <small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
-      </dl><p class="link"></p>
-    </div>
-    <!-- Rewrap DV -->
+      <h2 id="rewrap">Change container (rewrap)</h2>
 
+      <!-- Basic rewrap command -->
+      <label class="recipe" for="basic-rewrap">Basic rewrap command</label>
+      <input type="checkbox" id="basic-rewrap">
+      <div class="hiding">
+        <p><code>ffmpeg -i <em>/PATH/TO/input_file.ext</em> -c copy -map 0 <em>/PATH/TO/output_file.ext</em></code></p>
+        <p>This script will rewrap a video file. It will create a new video video file where the inner content (the video, audio, and subtitle data) of the original file is unchanged, but these streams are rehoused within a different container format.</p>
+        <dl>
+          <dt>ffmpeg</dt><dd>starts the command</dd>
+          <dt>-i <em>/PATH/TO/input_file.ext</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+          <dt>-c copy</dt><dd>copy the streams directly, without re-encoding.</dd>
+          <dt>-map 0</dt><dd>map all streams of the input to the output.<br>
+          By default, FFmpeg will only map one stream of each type (video, audio, subtitles) to the output file. However, files may have multiple streams of a given type - for example, a video may have several audio tracks for different languages. Therefore, if you want to preserve all the streams in the original, it's necessary to use this option.</dd>
+          <dt><em>/PATH/TO/output_file.ext</em></dt><dd>path and name of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.<br>
+          The new container you are rewrapping to is defined by the filename extension used here, e.g. .mkv, .mp4, .mov.</dd>
+        </dl>
+	<small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
+	<p class="link"></p>
+      </div>
 
-	  </div>
-	    <div class="well">
-	    <h2 id="transcode">Transcode a Video</h2>
-	   <!-- Begins Transcode -->
-	    <label class="recipe" for="MOV_to_MKV">Transcode an MOV to MKV</label>
-	    <input type="checkbox" id="MOV_to_MKV">
-	    <div class="hiding">
-	      <p><code>ffmpeg -i /PATH/TO/input_file.MOV -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le /PATH/TO/output_file.MKV</code></p>
-				<p>To run this script as a loop, first <code>cd</code> into the directory holding the .MOVs you want to transcode.<br>
-					Then, execute the following:</p>
-					<p><code>#!/bin/bash<br>
-					for i in *.mov;<br>
-					do ffmpeg -i ${i} -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le ${i%.*}.mkv;<br>
-					done</code></p>
-	    </div>
-	    <!-- ends Transcode -->
+      <!-- Rewrap DV -->
+      <label class="recipe" for="rewrap-dv">Rewrap DV video to .dv file</label>
+      <input type="checkbox" id="rewrap-dv">
+      <div class="hiding">
+        <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -f rawvideo -c:v copy <em>/PATH/TO/output_file.dv</em></code></p>
+        <p>This script will take a video that is encoded in the <a href="https://en.wikipedia.org/wiki/DV" target="_blank">DV Codec</a> but wrapped in a different container (such as MOV) and rewrap it into a raw DV file (with the .dv extension). Since DV files potentially contain a great deal of provenance metadata within the DV stream, it is necessary to rewrap files in this method to avoid unintentional stripping of this metadata.</p>
+        <dl>
+          <dt>ffmpeg</dt><dd>starts the command</dd>
+          <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+          <dt>-f rawvideo</dt><dd>this tells FFmpeg to pass the video stream as raw video data without remuxing. This step is what ensures the survival of embedded metadata versus a standard rewrap.</dd>
+          <dt>-c:v copy</dt><dd>copy the DV stream directly, without re-encoding.</dd>
+          <dt><em>/PATH/TO/output_file.dv</em></dt><dd>tells FFmpeg to use the DV wrapper for the output. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+        </dl>
+	<small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
+        <p class="link"></p>
+      </div>
+    </div>
+
+    <div class="well">
+      <h2 id="transcode">Transcode a Video</h2>
+
+      <!-- Begins Transcode -->
+      <label class="recipe" for="MOV_to_MKV">Transcode an MOV to MKV</label>
+      <input type="checkbox" id="MOV_to_MKV">
+      <div class="hiding">
+	<p><code>ffmpeg -i /PATH/TO/input_file.MOV -map 0 -dn -c:v ffv1 -level 3 -g 1 -slicecrc 1 -slices 16 -c:a copy /PATH/TO/output_file.MKV</code></p>
+	<p>To run this script as a loop, first <code>cd</code> into the directory holding the .MOVs you want to transcode.<br>
+	Then, execute the following:</p>
+	<p><code>#!/bin/bash<br>
+	for i in *.mov;<br>
+	do ffmpeg -i ${i} -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le ${i%.*}.mkv;<br>
+	done</code></p>
+      </div>
+
+    <div class="well">
+      <h2 id="trim">Trim a video</h2>
+    
+      <!-- Trim -->
+      <label class="recipe" for="trim_video">Trim video without re-encoding</label>
+      <input type="checkbox" id="trim_video">
+      <div class="hiding">
+        <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -ss 00:02:00 -to 00:55:00 -c copy -map 0 <em>/PATH/TO/output_file</em></code></p>
+        <p>This command allows you to create an excerpt from a file without re-encoding the audiovisual data.</p>
+        <dl>
+          <dt>ffmpeg</dt><dd>starts the command</dd>
+          <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path, name and extension of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+          <dt>-ss 00:02:00</dt><dd>sets in point at 00:02:00</dd>
+          <dt>-to 00:55:00</dt><dd>sets out point at 00:55:00</dd>
+          <dt>-c copy</dt><dd>use stream copy mode (no re-encoding)<br>
+          <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.<br>
+          <dt><em>/PATH/TO/output_file</em></dt><dd>path, name and extension of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+        </dl>
+        <p>Variation: trim file by setting duration, by using <code>-t</code> instead of <code>-to</code></p>
+        <p><code>ffmpeg -i <em>input_file</em> -ss 00:05:00 -t 10 -c copy <em>output_file</em></code></p>
+        <dl>
+          <dt>-ss 00:05:00 -t 10</dt><dd>Beginning five minutes into the original video, this command will create a 10-second-long excerpt.</dd>
+        </dl>
+	<small>This section modified from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
+        <p class="link"></p>
+      </div>
+
+    <div class="well">
+      <h2 id="mediainfo">CSV of file details</h2>
+    
+      <!-- Media Info -->
+      <label class="recipe" for="mediainfo">Create a CSV of file video details</label>
+      <input type="checkbox" id="mediainfo">
+      <div class="hiding">
+        <p>This Ruby script generates a csv document listing all the preservation files and their corresponding mp4s in a given folder, along with file sizes and duration.</p>
+	<p>To use, save the below code as an .rb file.</p>
+        <p><code>
+	  #!/usr/bin/env ruby
+	  require 'open3'
+
+	  def CheckSizemp4(input)
+	    targetdir = File.dirname(input)
+	    targetmp4 = Dir["#{targetdir}/**/*.mp4"][0]
+	    if ! targetmp4.nil?
+	      @mp4_sizemb = (File.size(targetmp4).to_f / 1000.0**2).round(2).to_s
+	    else
+	      @mp4_sizemb = "NA"
+	    end
+	  end
+
+	  def CheckSizemkv(input)
+	    @file_sizegb = '%.2f' % (File.size(input).to_f / 1000.0**3)
+	  end
+
+	  def CheckLength(input)
+	    stdout, stderr, status = Open3.capture3("ffprobe '#{input}'")
+	    ffprobeoutput = stderr.split("\n")
+	    ffprobeoutput.each do |line|
+	      if line.include?('Duration')
+		@input_length = line.split(" ")[1].chomp(',')
+		puts @input_length
+	      end
+	    end
+	  end
+
+	  fileinputs = []
+	  LegalExtensions = ['mov', 'mkv','dv', 'avi']
+	  $input = ARGV[0]
+	  if File.directory?($input)
+	    targets = []
+	    LegalExtensions.each { |extension| targets << Dir["#{$input}/**/*.#{extension}"] }
+	    targets.flatten.each do |file|
+	      fileinputs << file
+	    end
+	  else
+	    puts "Please use a directory for input"
+	    exit
+	  end
+
+	  $write_to_csv = []
+	  puts fileinputs
+
+	  fileinputs.each do |fileinput|
+	    CheckSizemkv(fileinput)
+	    CheckSizemp4(fileinput)
+	    CheckLength(fileinput)
+	    @csvline = File.basename(fileinput , ".*") + ',' + @file_sizegb.to_s + ',' + @mp4_sizemb.to_s + "," + @input_length.to_s
+	    $write_to_csv << @csvline
+	  end
+	</code>
+	<code>
+	  File.open(File.expand_path("/DESIRED/PATH/TO/CSV/STORAGE/#{Time.now.strftime('%Y-%m-%d')}_MediaInfo.csv"), 'w') do |f|
+	    # Outputs onto Admin Desktop
+	    f.puts "Name,Master File(gB),MP4(mb),DURATION"
+	      $write_to_csv.each do |line|
+		f.puts(line)
+	      end
+	    end
+	</code></p>
+	<p>You can add or remove extensions after <code>LegalExtensions</code> if you want the script to capture different kinds of files.</p>
+	<p>Change <code>/DESIRED/PATH/TO/CSV/STORAGE/</code> to reflect where you would like the final csv to be saved.</p>
+        <p>To run the script, first <code>cd</code> to the folder containing the files you want analyzed. Then run this bash script:</p>
+        <p><code>#!/bin/bash
+	  ruby /PATH/TO/RUBY/FILE.rb $PWD</code></p>
+      </div>
+    </div>
 		
+    <div class="well">
+      <h2 id="videoaip">Run a loop using VideoAIP</h2>
+    
+      <!-- Looping VideoAIP-->
+      <label class="recipe" for="videoaip_loop">Creating a loop with VideoAIP</label>
+      <input type="checkbox" id="videoaip_loop">
+      <div class="hiding">
+        <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
+	<p><code>#!/bin/bash<br>
+	while read TARGET<br>
+	do videoaip -l auto "$TARGET" &lt;/dev/null<br>
+	done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv')</code></p>
+	<p>VideoAIP will try to process any files that it comes across. To ensure VideoAIP only processes the file extensions you've defined, you can replace the last line of the script with:<br>
+	<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov')</code></p>
+	<p>This command will find all .mkv, .dv, and .mov files in the defined directory.</p>
+      </div>
+	
+    <div class="well">
+      <h2 id="cronjob">Scheduling a Cron Job</h2>
 
-  </div>
-    <div class="well">
-    <h2 id="trim">Trim a video</h2>
-    <!-- Trim -->
-    <label class="recipe" for="trim_video">Trim video without re-encoding</label>
-    <input type="checkbox" id="trim_video">
-    <div class="hiding">
-      <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -ss 00:02:00 -to 00:55:00 -c copy -map 0 <em>/PATH/TO/output_file</em></code></p>
-      <p>This command allows you to create an excerpt from a file without re-encoding the audiovisual data.</p>
-      <dl>
-        <dt>ffmpeg</dt><dd>starts the command</dd>
-        <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path, name and extension of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
-        <dt>-ss 00:02:00</dt><dd>sets in point at 00:02:00</dd>
-        <dt>-to 00:55:00</dt><dd>sets out point at 00:55:00</dd>
-        <dt>-c copy</dt><dd>use stream copy mode (no re-encoding)<br>
-        <dt>-map 0</dt><dd>tells FFmpeg to map all streams of the input to the output.<br>
-        <dt><em>/PATH/TO/output_file</em></dt><dd>path, name and extension of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
-      </dl>
-      <p>Variation: trim file by setting duration, by using <code>-t</code> instead of <code>-to</code></p>
-      <p><code>ffmpeg -i <em>input_file</em> -ss 00:05:00 -t 10 -c copy <em>output_file</em></code></p>
-      <dl>
-        <dt>-ss 00:05:00 -t 10</dt><dd>Beginning five minutes into the original video, this command will create a 10-second-long excerpt.</dd>
-      </dl>
-	  <small>This section modified from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
-      <p class="link"></p>
-    </div>
-    <!-- ends Trim -->
-		
-  </div>
-    <div class="well">
-    <h2 id="videoaip">Run a loop using VideoAIP</h2>
-    <!-- Looping VideoAIP-->
-    <label class="recipe" for="videoaip_loop">Creating a loop with VideoAIP</label>
-    <input type="checkbox" id="videoaip_loop">
-    <div class="hiding">
-      <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
-			<p><code>#!/bin/bash<br>
-			while read TARGET<br>
-			do videoaip -l auto "$TARGET" &lt;/dev/null<br>
-			done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv')</code></p>
-			<p>VideoAIP will try to process any files that it comes across. To ensure VideoAIP only processes the file extensions you've defined, you can replace the last line of the script with:<br>
-				<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov')</code></p>
-				<p>This command will find all .mkv, .dv, and .mov files in the defined directory.</p>
-    </div>
-    <!-- ends Looping VideoAIP -->
-		
-    </div>
-    <div class="well">
-    <h2 id="cronjob">Scheduling a Cron Job</h2>
-
-    <!-- Using Crontab-ui -->
-    <label class="recipe" for="crontab_ui">Cron Job Manager</label>
-    <input type="checkbox" id="crontab_ui">
-    <div class="hiding">
-      <h4>Using Crontab-UI</h4>
-      <p>To use <a href="https://github.com/alseambusher/crontab-ui">crontab-ui</a>, first install <code>node</code> using:<br><code>brew install node</code></p>
-			<p>Then, install <code>crontab-ui</code> using:<br><code>npm -install -g crontab-ui</code></p>
-			<p><strong>You may need to use <code>sudo</code> when running the command above.</strong></p>
-			<p><strong>To use:</strong> From the terminal, run <code>crontab-ui</code></p>
-	  <p>You will see the following output:<br>
-<code>Node version: [CURRENT VERSION]<br>
-Crontab UI is running at http://[IP ADDRESS]</code></p>
+      <!-- Using Crontab-ui -->
+      <label class="recipe" for="crontab_ui">Cron Job Manager</label>
+      <input type="checkbox" id="crontab_ui">
+      <div class="hiding">
+        <h4>Using Crontab-UI</h4>
+        <p>To use <a href="https://github.com/alseambusher/crontab-ui">crontab-ui</a>, first install <code>node</code> using:<br><code>brew install node</code></p>
+	<p>Then, install <code>crontab-ui</code> using:<br><code>npm -install -g crontab-ui</code></p>
+	<p><strong>You may need to use <code>sudo</code> when running the command above.</strong></p>
+	<p><strong>To use:</strong> From the terminal, run <code>crontab-ui</code></p>
+	<p>You will see the following output:<br>
+        <code>Node version: [CURRENT VERSION]<br>
+        Crontab UI is running at http://[IP ADDRESS]</code></p>
 	<p>Now, open your web browser and navigate to http://[IP ADDRESS]</p>
 	<p>From this page, you'll be able to schedule, edit, save, and delete jobs.</p>
 	<p class="link"></p>
-	</div>
-	<!--  ends Using Crontab-ui -->
-   <!-- creating cron jobs -->
-<label class="recipe" for="creat_cron">Creating Cron Jobs</label>
-    <input type="checkbox" id="creat_cron">
-    <div class="hiding">	
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the format for a simple Cron Job:<br>
+      </div>
+
+      <!-- Creating Cron Jobs -->
+      <label class="recipe" for="creat_cron">Creating Cron Jobs</label>
+      <input type="checkbox" id="creat_cron">
+      <div class="hiding">	
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the format for a simple Cron Job:<br>
 	<code>0 22 * * * /Users/MIPoPS/Desktop/BackUp.sh</code>
 	<p>The first part is <code>0 22 * * *</code> This is where we schedule the timer. This job will run at 10 pm every evening.<br>The rest of the line is the command as it would run from the command line. This job would run the BackUp shell script from MIPoPS desktop.</p>
 	<p>Each asterix represents a unit of time, as follows:<br>
-<code><small>Minute(0-59) Hour(0-24) Day_of_month(1-31) Month(1-12) Day_of_week(0-6)</small></code>
-<p><strong>Use MILITARY TIME!</p></strong>
-<p>This cron job will run at minute zero, every hour (i.e. an hourly cron job):<br>
-<code>0 * * * * [command]</code>
-<p>This is also an hourly cron job but run at minute 15 instead (i.e. 00:15, 01:15, 02:15 etc.):<br>
-<code>15 * * * * [command]</code>
-<p>This will run once a day, at 2:30am:<br>
-<code>30 2 * * * [command]</code>
-<p>This will run once a month, on the second day of the month at midnight (i.e. January 2nd 12:00am, February 2nd 12:00am etc.):<br>
-<code>0 0 2 * * [command]</code>
-<p>If you need help generating the crontab syntax, try using <a href="http://corntab.com/" target="_blank">Corntab.</a></p>
-      <p class="link"></p>
-</div>
-    <!-- ends NTSC to H.264 -->
-		<label class="recipe" for="Save_start_modify">Saving, Starting, and Modifying Cron Jobs</label>
-		    <input type="checkbox" id="Save_start_modify">
-		    <div class="hiding">	
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the layout of the Crontab-ui website.</p>
-			<p><img src="img/Crontab_menu.png" style="width:100%;height:100%;"></p>
-			<p>From the Crontab-ui page, click <strong>New</strong> to describe and create new job. Here is an example of a job that would run the shell script "MH_to_HD_sync.sh" at 6:00am daily.</p>
-			<img src="img/Crontab_UI.png" style="width:55%;height:55%;">
-			<p>Hit <strong>"Save"</strong> when you're finished. Then, click <strong>"Save to crontab"</strong>. This schedules the job. It will now run at the appointed time.</p>
-		<p>To run the job immediately, click <strong>"Run"</strong>.</p>
-		<p>To stop the job from running, click <strong>"Stop"</strong>, then click <strong>"Save to crontab"</strong>.</p>
-		<p>To re-schedule (or resume) a job, click <strong>"Start"</strong>, then click <strong>"Save to crontab"</strong>.</p>
-		<p>To see what jobs are scheduled to run, from the terminal, run <code>crontab -e</code>. You'll see a list of all jobs that are saved to the crontab.</p>
-		      <p class="link"></p>
-		    </div>
-  </div>
+	<code><small>Minute(0-59) Hour(0-24) Day_of_month(1-31) Month(1-12) Day_of_week(0-6)</small></code>
+	<p><strong>Use MILITARY TIME!</p></strong>
+	<p>This cron job will run at minute zero, every hour (i.e. an hourly cron job):<br>
+	<code>0 * * * * [command]</code>
+	<p>This is also an hourly cron job but run at minute 15 instead (i.e. 00:15, 01:15, 02:15 etc.):<br>
+	<code>15 * * * * [command]</code>
+	<p>This will run once a day, at 2:30am:<br>
+	<code>30 2 * * * [command]</code>
+	<p>This will run once a month, on the second day of the month at midnight (i.e. January 2nd 12:00am, February 2nd 12:00am etc.):<br>
+	<code>0 0 2 * * [command]</code>
+	<p>If you need help generating the crontab syntax, try using <a href="http://corntab.com/" target="_blank">Corntab.</a></p>
+      	<p class="link"></p>
+      </div>
 
-</div>
-	    <div class="well">
-	    <h2 id="hiddenfiles">Dealing with hidden files</h2>
-	   <!-- Begins Hidden Files -->
-	    <label class="recipe" for="Find_Hide">Finding hidden files</label>
-	    <input type="checkbox" id="Find_Hide">
-	    <div class="hiding">
-	      <p>Occasionally you may encounter hidden files, especially on hard drives that move between Mac and PC environments. Ususally they don't present a problem. In case they do (like when verifying the contents of a <a href="https://github.com/LibraryOfCongress/bagit-java">bag</a>), here are two ways to find them:</p>
-<p><strong>To see them listed in the terminal / command line (on a Mac):</strong></p>
-<p>In the terminal, <code>cd</code> to the directory you want to examine. Then, run:<p>
-<p><code>find $PWD -iname "*._*"</code></p>
-<p>This will list all of the files in the directory that begin with "._". The asterisk represents a wildcard.</p>
-<p><strong>To see them in the Finder window (on a Mac):</strong></p>
-<p>In the terminal run:<p>
-<p><code>defaults write com.apple.finder AppleShowAllFiles true; killall Finder</code></p>
-<p>The first part of this command changes the settings within macOS to show all files. The second part restarts the Finder.</p>
-<p>To reverse this command, replace <code>true</code> with <code>false</code>, then run.</p>
-</div>
-	    <label class="recipe" for="Del_Hide">Deleting hidden files</label>
-	    <input type="checkbox" id="Del_Hide">
-	    <div class="hiding">
-<p><strong>In the terminal / command line (on a Mac):</strong></p>
-<p>Run: <code>find $PWD -iname "*._*" -delete</code></p>
-</div>
-</div>
+      <!-- Modifying Cron Jobs -->
+      <label class="recipe" for="Save_start_modify">Saving, Starting, and Modifying Cron Jobs</label>
+      <input type="checkbox" id="Save_start_modify">
+      <div class="hiding">	
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the layout of the Crontab-ui website.</p>
+	<p><img src="img/Crontab_menu.png" style="width:100%;height:100%;"></p>
+	<p>From the Crontab-ui page, click <strong>New</strong> to describe and create new job. Here is an example of a job that would run the shell script "MH_to_HD_sync.sh" at 6:00am daily.</p>
+	<img src="img/Crontab_UI.png" style="width:55%;height:55%;">
+	<p>Hit <strong>"Save"</strong> when you're finished. Then, click <strong>"Save to crontab"</strong>. This schedules the job. It will now run at the appointed time.</p>
+	<p>To run the job immediately, click <strong>"Run"</strong>.</p>
+	<p>To stop the job from running, click <strong>"Stop"</strong>, then click <strong>"Save to crontab"</strong>.</p>
+	<p>To re-schedule (or resume) a job, click <strong>"Start"</strong>, then click <strong>"Save to crontab"</strong>.</p>
+	<p>To see what jobs are scheduled to run, from the terminal, run <code>crontab -e</code>. You'll see a list of all jobs that are saved to the crontab.</p>
+	<p class="link"></p>
+      </div>
+    </div>
 
-<div class="well">
-    <h2 id="LTO_basics">Using Linear Tape Open (LTO) -- UNDER CONSTRUCTION --</h2>
+    <div class="well">
+      <h2 id="hiddenfiles">Dealing with hidden files</h2>
+
+      <!-- Begins Finding Hidden Files -->
+      <label class="recipe" for="Find_Hide">Finding hidden files</label>
+      <input type="checkbox" id="Find_Hide">
+      <div class="hiding">
+	<p>Occasionally you may encounter hidden files, especially on hard drives that move between Mac and PC environments. Ususally they don't present a problem. In case they do (like when verifying the contents of a <a href="https://github.com/LibraryOfCongress/bagit-java">bag</a>), here are two ways to find them:</p>
+	<p><strong>To see them listed in the terminal / command line (on a Mac):</strong></p>
+	<p>In the terminal, <code>cd</code> to the directory you want to examine. Then, run:<p>
+	<p><code>find $PWD -iname "*._*"</code></p>
+	<p>This will list all of the files in the directory that begin with "._". The asterisk represents a wildcard.</p>
+	<p><strong>To see them in the Finder window (on a Mac):</strong></p>
+	<p>In the terminal run:<p>
+	<p><code>defaults write com.apple.finder AppleShowAllFiles true; killall Finder</code></p>
+	<p>The first part of this command changes the settings within macOS to show all files. The second part restarts the Finder.</p>
+	<p>To reverse this command, replace <code>true</code> with <code>false</code>, then run.</p>
+      </div>
+
+      <!-- Begins Finding Hidden Files -->
+      <label class="recipe" for="Del_Hide">Deleting hidden files</label>
+      <input type="checkbox" id="Del_Hide">
+      <div class="hiding">
+	<p><strong>In the terminal / command line (on a Mac):</strong></p>
+	<p>Run: <code>find $PWD -iname "*._*" -delete</code></p>
+      </div>
+    </div>
+
+    <div class="well">
+    <h2 id="LTO_basics">Using Linear Tape Open (LTO)</h2>
+
+    <!-- LTO Installation -->
     <label class="recipe" for="lto_install">Installation</label>
     <input type="checkbox" id="lto_install">
-	    <div class="hiding">
-		<p><strong>The instructions provided are for the macOS!</strong></p>
-		<hr size="5" width="20%" color="#f88379" align="left">
-		<p>First, install <a href="https://brew.sh/"><strong>Homebrew</strong></a> using the instructions provided on their website (it's easy!). You may need to work with your systems or IT department to ensure you've got the necessary permissions to install Homebrew.</p>
-		<hr size="5" width="20%" color="#f88379" align="left">
-		<p>Next, you'll be tapping repositories from <a href="https://github.com/amiaopensource">AMIA Open Source</a> and <a href="https://github.com/pugetsoundandvision">Puget Sound and Vision</a>. In the terminal, run:</p>
-		<p><code>brew tap amiaopensource/amiaos</code></p> 
-		<p><code>brew tap pugetsoundandvision/pugetsoundandvision</code></p>
-		<p>Now, you'll install <a href="https://github.com/amiaopensource/ltopers">ltopers</a> and <a href="https://github.com/pugetsoundandvision/lto_tools">ltotools</a>. In the terminal, run:</p>
-		<code>brew install ltopers</code></p>
-		<p><code>brew install ltotools</code></p>
-	    </div>
-	
-	<label class="recipe" for="formatlto">Format your tape</label>
-    <input type="checkbox" id="formatlto">
-	    <div class="hiding">
-		<p>LTO tapes need to be formatted before they can be used.</p>
-		<p>In the terminal, run the following command: <code>formatlto</code></p>
-		<p>You will be prompted to enter the tape serial identifier. The tape serial format is exactly 6 capital letters and/or numbers (e.g. A00001, A00002, B00001, B00002, etc.) Remember to physically label your tape with the tape serial number!</p>
-		<p>UNDER CONSTRUCTION</p>
-		</div>
-	
-	<label class="recipe" for="ltomanifest">Create a manifest</label>
-    <input type="checkbox" id="ltomanifest">
-	    <div class="hiding">
-		<p>Before you write to tape, you'll need to create a manifest of the content you'll be transferring. To do this, group all of your files into a single location. This can be a directory or a volume.</p>
-		<p>To create the manifest, run:</p> <code>ltomanifest -m /PATH/TO/DIRECTORY</code></p>
-		<p>The option<code>-m</code> = make manifest.</p>
-		<p>Creating the manifest can take a significant amount of time, especially if you're writing a large set of files.</p>
-		<p>UNDER CONSTRUCTION</p>
-		</div>
+    <div class="hiding">
+      <p><strong>The instructions provided are for the macOS!</strong></p>
+      <hr size="5" width="20%" color="#f88379" align="left">
+      <p>First, install <a href="https://brew.sh/"><strong>Homebrew</strong></a> using the instructions provided on their website (it's easy!). You may need to work with your systems or IT department to ensure you've got the necessary permissions to install Homebrew.</p>
+      <hr size="5" width="20%" color="#f88379" align="left">
+      <p>Next, you'll be tapping repositories from <a href="https://github.com/amiaopensource">AMIA Open Source</a> and <a href="https://github.com/pugetsoundandvision">Puget Sound and Vision</a>. In the terminal, run:</p>
+      <p><code>brew tap amiaopensource/amiaos</code></p> 
+      <p><code>brew tap pugetsoundandvision/pugetsoundandvision</code></p>
+      <p>Now, you'll install <a href="https://github.com/amiaopensource/ltopers">ltopers</a> and <a href="https://github.com/pugetsoundandvision/lto_tools">ltotools</a>. In the terminal, run:</p>
+      <code>brew install ltopers</code></p>
+      <p><code>brew install ltotools</code></p>
+    </div>
 
-	<label class="recipe" for="writelto">Write your data to tape</label>
+    <!-- LTO Formatting -->
+    <label class="recipe" for="formatlto">Format your tape</label>
+    <input type="checkbox" id="formatlto">
+    <div class="hiding">
+      <p>LTO tapes need to be formatted before they can be used.</p>
+      <p>In the terminal, run the following command: <code>formatlto</code></p>
+      <p>You will be prompted to enter the tape serial identifier. The tape serial format is exactly 6 capital letters and/or numbers (e.g. A00001, A00002, B00001, B00002, etc.) Remember to physically label your tape with the tape serial number!</p>
+      <p>After entering the identifier, allow the system to work on formatting and partitioning the tape. Once it finishes, it is ready for writing.</p>
+    </div>
+
+    <!-- LTO Manifest -->
+    <label class="recipe" for="ltomanifest">Create a manifest</label>
+    <input type="checkbox" id="ltomanifest">
+    <div class="hiding">
+      <p>Before you write to tape, you'll need to create a manifest of the content you'll be transferring. To do this, group all of your files into a single location. This can be a directory or a volume.</p>
+      <p>To create the manifest, run:</p> <code>ltomanifest -m /PATH/TO/DIRECTORY</code></p>
+      <p>The option<code>-m</code> = make manifest.</p>
+      <p>Creating the manifest can take a significant amount of time, especially if you're writing a large set of files.</p>
+      <p>If the manifest encounters any issue with a  bag, it will terminate and exit the process. You will eventually need to re-bag that AIP and restart the manifest.</p>
+      <img src="img/manifest_error.png" style="width:55%;height:55%;">
+      <p>Once it's finished, the top-level folder will have a manifest file called <code>tapemanifest.txt</code>.</p>
+    </div>
+
+    <!-- LTO Write -->
+    <label class="recipe" for="writelto">Write your data to tape</label>
     <input type="checkbox" id="writelto">
-	    <div class="hiding">
-		<h4>Mounting the tape</h4>
-		<p>Before you can write, you'll need to mount the tape. Put the tape that you want to write to into the deck (you don't need to push it in all the way).</p>
-		<p>Then, run:</p><p><code>mountlto</code></p>
-		<p>You'll be prompted to enter the tape serial number. The tape should then mount into the deck. The deck can be pretty loud - <strong>don't be alarmed!</strong> <p>Once it's fully mounted, you should see the tape appear on the desktop, like you would see an external drive. You can open this in the finder window. Be aware that once you've written files to the tape, it can take the computer a long time to open them because it has to physically reel through the spool of magnetic tape.</p>
-		<hr size="5" width="20%" color="#f88379" align="left">
-		<h4>Writing data to the tape</h4>
-		<p>Now, open a second terminal window.
-		<p>Run:</p><p><code>writelto -t TAPESERIALNUMBER /PATH/TO/DIRECTORY</code></p>
-		<p>The path above should point to the directory of files you're going to transfer (which will also contain the manifest you made earlier).</p>
-		<p>This can take a LOT of time, depending on the amount of data you're writing to the tape. It can also be quite loud, as the deck and the tape chug along.</p>
-		</div>
-	
-	<label class="recipe" for="confirmlto">Confirm the data transfer</label>
+    <div class="hiding">
+      <h4>Mounting the tape</h4>
+      <p>Before you can write, you'll need to mount the tape. Put the tape that you want to write to into the deck (you don't need to push it in all the way).</p>
+      <p>Then, run:</p><p><code>mountlto</code></p>
+      <p>You'll be prompted to enter the tape serial number. The tape should then mount into the deck. The deck can be pretty loud - <strong>don't be alarmed!</strong> <p>Once it's fully mounted, you should see the tape appear on the desktop, like you would see an external drive. You can open this in the finder window. Be aware that once you've written files to the tape, it can take the computer a long time to open them because it has to physically reel through the spool of magnetic tape.</p>
+      <hr size="5" width="20%" color="#f88379" align="left">
+      <h4>Writing data to the tape</h4>
+      <p>Now, open a second terminal window.
+      <p>Run:</p><p><code>writelto -t TAPESERIALNUMBER /PATH/TO/DIRECTORY</code></p>
+      <p>The path above should point to the directory of files you're going to transfer (which will also contain the manifest you made earlier).</p>
+      <p>This can take a LOT of time, depending on the amount of data you're writing to the tape. It can also be quite loud, as the deck and the tape chug along.</p>
+    </div>
+
+    <!-- LTO Confirm -->
+    <label class="recipe" for="confirmlto">Confirm the data transfer</label>
     <input type="checkbox" id="confirmlto">
-	    <div class="hiding">
-		<p>Re-mount the tape using the instructions above for <code>mountlto</code>.</p>
-		<p>Open a second terminal window. Run:</p>
-		<p><code>ltomanifest -c /PATH/TO/MANIFEST/ON/TAPE/tapemanifest.txt</code></p>
-		<p>The option <code>-c</code> = confirm manifest. This makes sure that what was transferred to the tape is exactly the same as what you started with. This can take a significant amount of time, depending on the amount of data you're writing to the tape.</p>
-		<p>Once the manifest has confirmed, the tape will unmount and eject itself.</p>
-		</div>
-		
-	<label class="recipe" for="readlto">Pull data from LTO</label>
+    <div class="hiding">
+      <p>Re-mount the tape using the instructions above for <code>mountlto</code>.</p>
+      <p>Open a second terminal window. Run:</p>
+      <p><code>ltomanifest -c /PATH/TO/MANIFEST/ON/TAPE/tapemanifest.txt</code></p>
+      <p>The option <code>-c</code> = confirm manifest. This makes sure that what was transferred to the tape is exactly the same as what you started with. This can take a significant amount of time, depending on the amount of data you're writing to the tape.</p>
+      <p>Once the manifest has confirmed, the tape will unmount and eject itself.</p>
+    </div>
+
+    <!-- LTO Data -->
+    <label class="recipe" for="readlto">Pull data from LTO</label>
     <input type="checkbox" id="readlto">
-	    <div class="hiding">
-		<p>Mount the tape using <code>mountlto</code>, as described above.</p>
-		<p>You will see the tape appear on your desktop, or you can navigate to it via the Finder. Locate the file you wish to retrieve, then simply drag and drop or use <code>rsync</code> to copy the file to the new location.</p>
-		<p><strong>Remember - LTO is not like a regular external hard drive.</strong> It will take more time than you may be used to for the file or files you're looking for to appear. The computer has to physically reel through the spool of magnetic tape!</p>
-</p>
-		</div>
-		
-</div>
-<!-- ends "content" -->
+    <div class="hiding">
+      <p>Mount the tape using <code>mountlto</code>, as described above.</p>
+      <p>You will see the tape appear on your desktop, or you can navigate to it via the Finder. Locate the file you wish to retrieve, then simply drag and drop or use <code>rsync</code> to copy the file to the new location.</p>
+      <p><strong>Remember - LTO is not like a regular external hard drive.</strong> It will take more time than you may be used to for the file or files you're looking for to appear. The computer has to physically reel through the spool of magnetic tape!</p>		</div>
+    </div>
+  </div> <!-- ends "content" -->
+
 
 <!-- sample example -->
-<!--   <label class="recipe" for="*****unique name*****">*****Title****</label>
-  <input type="checkbox" id="*****unique name*****">
-  <div class="hiding">
-Change the above data-target field, the hover-over description, the button text, and the below div ID
-  <h3>*****Longer title*****</h3>
-  <p><code>ffmpeg -i <em>input_file</em> *****code goes here***** <em>output_file</em></code></p>
-  <p>This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info!</p>
-  <dl>
-    <dt>ffmpeg</dt><dd>starts the command</dd>
-    <dt>-i <em>input file</em></dt><dd>path, name and extension of the input file</dd>
-    <dt>*****parameter*****</dt><dd>*****comments*****</dd>
-    <dt><em>output file</em></dt><dd>path, name and extension of the output file</dd>
-  </dl>
-</div> -->
+<!--   
+    <div class="well">
+    <label class="recipe" for="*****unique name*****">*****Title****</label>
+    <input type="checkbox" id="*****unique name*****">
+      <div class="hiding">
+      Change the above data-target field, the hover-over description, the button text, and the below div ID
+      <h3>*****Longer title*****</h3>
+      <p><code>ffmpeg -i <em>input_file</em> *****code goes here***** <em>output_file</em></code></p>
+      <p>This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info! This is all about info!</p>
+      <dl>
+        <dt>ffmpeg</dt><dd>starts the command</dd>
+        <dt>-i <em>input file</em></dt><dd>path, name and extension of the input file</dd>
+        <dt>*****parameter*****</dt><dd>*****comments*****</dd>
+        <dt><em>output file</em></dt><dd>path, name and extension of the output file</dd>
+      </dl>
+    </div> -->
 <!-- ends sample example -->
 
 <footer class="footer">
   <p>Skeleton based on <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffmprovisr</a></p>
 </footer>
-</div><!-- ends "grid" -->
+</div> <!-- ends "grid" -->
 </body>
 </html>
