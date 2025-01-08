@@ -152,6 +152,7 @@
 	do ffmpeg -i ${i} -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le ${i%.*}.mkv;<br>
 	done</code></p>
       </div>
+    </div>
 
     <div class="well">
       <h2 id="trim">Trim a video</h2>
@@ -179,6 +180,7 @@
 	<small>This section modified from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
         <p class="link"></p>
       </div>
+    </div>
 
     <div class="well">
       <h2 id="mediainfo">CSV of file details</h2>
@@ -276,6 +278,7 @@
 	<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov')</code></p>
 	<p>This command will find all .mkv, .dv, and .mov files in the defined directory.</p>
       </div>
+    </div>
 	
     <div class="well">
       <h2 id="cronjob">Scheduling a Cron Job</h2>
