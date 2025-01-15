@@ -104,17 +104,19 @@
       <label class="recipe" for="basic-rewrap">Basic rewrap command</label>
       <input type="checkbox" id="basic-rewrap">
       <div class="hiding">
-        <p><code>ffmpeg -i <em>/PATH/TO/input_file.ext</em> -c copy -map 0 <em>/PATH/TO/output_file.ext</em></code></p>
+        <p><code>ffmpeg -i /PATH/TO/input_file.ext -c copy -map 0 <em>/PATH/TO/output_file.ext</em></code></p>
         <p>This script will rewrap a video file. It will create a new video video file where the inner content (the video, audio, and subtitle data) of the original file is unchanged, but these streams are rehoused within a different container format.</p>
         <dl>
           <dt>ffmpeg</dt><dd>starts the command</dd>
-          <dt>-i <em>/PATH/TO/input_file.ext</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+          <dt>-i /PATH/TO/input_file.ext</dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
           <dt>-c copy</dt><dd>copy the streams directly, without re-encoding.</dd>
           <dt>-map 0</dt><dd>map all streams of the input to the output.<br>
           By default, FFmpeg will only map one stream of each type (video, audio, subtitles) to the output file. However, files may have multiple streams of a given type - for example, a video may have several audio tracks for different languages. Therefore, if you want to preserve all the streams in the original, it's necessary to use this option.</dd>
-          <dt><em>/PATH/TO/output_file.ext</em></dt><dd>path and name of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.<br>
+          <dt>/PATH/TO/output_file.ext</dt><dd>path and name of the output file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.<br>
           The new container you are rewrapping to is defined by the filename extension used here, e.g. .mkv, .mp4, .mov.</dd>
         </dl>
+	<p>For MKV to AVI, if ffmpeg gets mad about the embedded capture logs, try this command instead:</p>
+	<p><code>ffmpeg -i /PATH/TO/input_file.ext -c:v ffv1 -level 3 -coder 1 -g 1 -slices 24 -slicecrc 1 -c:a pcm_s24le /PATH/TO/output_file.ext</code></p>
 	<small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
 	<p class="link"></p>
       </div>
@@ -123,14 +125,14 @@
       <label class="recipe" for="rewrap-dv">Rewrap DV video to .dv file</label>
       <input type="checkbox" id="rewrap-dv">
       <div class="hiding">
-        <p><code>ffmpeg -i <em>/PATH/TO/input_file</em> -f rawvideo -c:v copy <em>/PATH/TO/output_file.dv</em></code></p>
+        <p><code>ffmpeg -i /PATH/TO/input_file -f rawvideo -c:v copy /PATH/TO/output_file.dv</code></p>
         <p>This script will take a video that is encoded in the <a href="https://en.wikipedia.org/wiki/DV" target="_blank">DV Codec</a> but wrapped in a different container (such as MOV) and rewrap it into a raw DV file (with the .dv extension). Since DV files potentially contain a great deal of provenance metadata within the DV stream, it is necessary to rewrap files in this method to avoid unintentional stripping of this metadata.</p>
         <dl>
           <dt>ffmpeg</dt><dd>starts the command</dd>
-          <dt>-i <em>/PATH/TO/input_file</em></dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+          <dt>-i /PATH/TO/input_file</dt><dd>path and name of the input file. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
           <dt>-f rawvideo</dt><dd>this tells FFmpeg to pass the video stream as raw video data without remuxing. This step is what ensures the survival of embedded metadata versus a standard rewrap.</dd>
           <dt>-c:v copy</dt><dd>copy the DV stream directly, without re-encoding.</dd>
-          <dt><em>/PATH/TO/output_file.dv</em></dt><dd>tells FFmpeg to use the DV wrapper for the output. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
+          <dt>/PATH/TO/output_file.dv</dt><dd>tells FFmpeg to use the DV wrapper for the output. To copy the full path of a file on a Mac, right-click on the file, then, while in the right-click menu, hold down the "OPTION" key to reveal the "Copy as Pathname" option.</dd>
         </dl>
 	<small>This section taken from <a href="https://amiaopensource.github.io/ffmprovisr/" target="_blank">ffimprovisr</a></small>
         <p class="link"></p>
@@ -140,7 +142,7 @@
     <div class="well">
       <h2 id="transcode">Transcode a Video</h2>
 
-      <!-- Begins Transcode -->
+      <!-- Transcode -->
       <label class="recipe" for="MOV_to_MKV">Transcode an MOV to MKV</label>
       <input type="checkbox" id="MOV_to_MKV">
       <div class="hiding">
@@ -149,7 +151,7 @@
 	Then, execute the following:</p>
 	<p><code>#!/bin/bash<br>
 	for i in *.mov;<br>
-	do ffmpeg -i ${i} -c:v ffv1 -level 3 -coder 0 -pix_fmt yuv422p10 -slices 16 -slicecrc 1 -c:a pcm_s24le ${i%.*}.mkv;<br>
+	do ffmpeg -i ${i} -map 0 -dn -c:v ffv1 -level 3 -g 1 -slicecrc 1 -slices 16 -c:a copy ${i%.*}.mkv;<br>
 	done</code></p>
       </div>
     </div>
