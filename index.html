@@ -25,6 +25,7 @@
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
     <a href="#mediainfo"><div class="contents-list">Media info</div></a>
     <a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
+    <a href="#unbag"><div class="contents-list">Unbag AIPs</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
     <a href="#hiddenfiles"><div class="contents-list">Dealing with hidden files</div></a>
     <a href="#LTO_basics"><div class="contents-list">LTO</div></a>
@@ -279,6 +280,28 @@
 	<p>VideoAIP will try to process any files that it comes across. To ensure VideoAIP only processes the file extensions you've defined, you can replace the last line of the script with:<br>
 	<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov')</code></p>
 	<p>This command will find all .mkv, .dv, and .mov files in the defined directory.</p>
+      </div>
+    </div>
+		
+    <div class="well">
+      <h2 id="unbag">Unbag AIPs</h2>
+
+    <!-- Unbag AIPs -->
+      <label class="recipe" for="unbag">Unbag AIPs</label>
+      <input type="checkbox" id="unbag">
+      <div class="hiding">
+	<p>This script will dive into every folder in a given directory and move all files at all nested levels in that folder up to the top-level folder. It will then delete all hidden files, all empty directories, and four types of files that are created by the VideoAIP program.</p>
+	<p>Be sure to <code>cd</code> to the correct parent directory containing all folders to be unbagged before you run the script.</p>
+	<p><code>#!/bin/bash
+	MainDir="$PWD"
+	for dir in */; do
+	cd "$dir"
+	find . -mindepth 2 -not -path '*/\.*' -type f -exec mv -i '{}' . \;
+	find . -type f -path '*/\.*' -exec rm {} \;
+	find . -depth -type d -empty -exec rmdir {} \;
+	find . -type f \( -name "bag-info.txt" -o -name "bagit.txt" -o -name "manifest-md5.txt" -o -name "tagmanifest-md5.txt" \) -exec rm {} \;
+	cd "$MainDir"</code></p>
+	<p>Once the unbagger finishes, you will still have to comb through the files and manually delete anything else that was created along with the AIP. This includes but is not limited to .txt, .xml, and .md5 files.</p>
       </div>
     </div>
 	
