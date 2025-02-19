@@ -194,73 +194,70 @@
       <div class="hiding">
         <p>This Ruby script generates a csv document listing all the preservation files and their corresponding mp4s in a given folder, along with file sizes and duration.</p>
 	<p>To use, save the below code as an .rb file.</p>
-        <p><code>
-	  #!/usr/bin/env ruby
-	  require 'open3'
-
-	  def CheckSizemp4(input)
-	    targetdir = File.dirname(input)
-	    targetmp4 = Dir["#{targetdir}/**/*.mp4"][0]
-	    if ! targetmp4.nil?
-	      @mp4_sizemb = (File.size(targetmp4).to_f / 1000.0**2).round(2).to_s
-	    else
-	      @mp4_sizemb = "NA"
-	    end
-	  end
-
-	  def CheckSizemkv(input)
-	    @file_sizegb = '%.2f' % (File.size(input).to_f / 1000.0**3)
-	  end
-
-	  def CheckLength(input)
-	    stdout, stderr, status = Open3.capture3("ffprobe '#{input}'")
-	    ffprobeoutput = stderr.split("\n")
-	    ffprobeoutput.each do |line|
-	      if line.include?('Duration')
-		@input_length = line.split(" ")[1].chomp(',')
-		puts @input_length
-	      end
-	    end
-	  end
-
-	  fileinputs = []
-	  LegalExtensions = ['mov', 'mkv','dv', 'avi']
-	  $input = ARGV[0]
-	  if File.directory?($input)
-	    targets = []
-	    LegalExtensions.each { |extension| targets << Dir["#{$input}/**/*.#{extension}"] }
-	    targets.flatten.each do |file|
-	      fileinputs << file
-	    end
-	  else
-	    puts "Please use a directory for input"
-	    exit
-	  end
-
-	  $write_to_csv = []
-	  puts fileinputs
-
-	  fileinputs.each do |fileinput|
-	    CheckSizemkv(fileinput)
-	    CheckSizemp4(fileinput)
-	    CheckLength(fileinput)
-	    @csvline = File.basename(fileinput , ".*") + ',' + @file_sizegb.to_s + ',' + @mp4_sizemb.to_s + "," + @input_length.to_s
-	    $write_to_csv << @csvline
-	  end
-	</code>
-	<code>
-	  File.open(File.expand_path("/DESIRED/PATH/TO/CSV/STORAGE/#{Time.now.strftime('%Y-%m-%d')}_MediaInfo.csv"), 'w') do |f|
-	    # Outputs onto Admin Desktop
-	    f.puts "Name,Master File(gB),MP4(mb),DURATION"
-	      $write_to_csv.each do |line|
-		f.puts(line)
-	      end
-	    end
-	</code></p>
+        <p><code>#!/usr/bin/env ruby<br>
+	  require 'open3'<br>
+	<br>
+	  def CheckSizemp4(input)<br>
+	    targetdir = File.dirname(input)<br>
+	    targetmp4 = Dir["#{targetdir}/**/*.mp4"][0]<br>
+	    if ! targetmp4.nil?<br>
+	      @mp4_sizemb = (File.size(targetmp4).to_f / 1000.0**2).round(2).to_s<br>
+	    else<br>
+	      @mp4_sizemb = "NA"<br>
+	    end<br>
+	  end<br>
+	<br>
+	  def CheckSizemkv(input)<br>
+	    @file_sizegb = '%.2f' % (File.size(input).to_f / 1000.0**3)<br>
+	  end<br>
+	<br>
+	  def CheckLength(input)<br>
+	    stdout, stderr, status = Open3.capture3("ffprobe '#{input}'")<br>
+	    ffprobeoutput = stderr.split("\n")<br>
+	    ffprobeoutput.each do |line|<br>
+	      if line.include?('Duration')<br>
+		@input_length = line.split(" ")[1].chomp(',')<br>
+		puts @input_length<br>
+	      end<br>
+	    end<br>
+	  end<br>
+	<br>
+	  fileinputs = []<br>
+	  LegalExtensions = ['mov', 'mkv','dv', 'avi']<br>
+	  $input = ARGV[0]<br>
+	  if File.directory?($input)<br>
+	    targets = []<br>
+	    LegalExtensions.each { |extension| targets << Dir["#{$input}/**/*.#{extension}"] }<br>
+	    targets.flatten.each do |file|<br>
+	      fileinputs << file<br>
+	    end<br>
+	  else<br>
+	    puts "Please use a directory for input"<br>
+	    exit<br>
+	  end<br>
+	<br>
+	  $write_to_csv = []<br>
+	  puts fileinputs<br>
+	<br>
+	  fileinputs.each do |fileinput|<br>
+	    CheckSizemkv(fileinput)<br>
+	    CheckSizemp4(fileinput)<br>
+	    CheckLength(fileinput)<br>
+	    @csvline = File.basename(fileinput , ".*") + ',' + @file_sizegb.to_s + ',' + @mp4_sizemb.to_s + "," + @input_length.to_s<br>
+	    $write_to_csv << @csvline<br>
+	  end<br>
+	<br>
+	  File.open(File.expand_path("/DESIRED/PATH/TO/CSV/STORAGE/#{Time.now.strftime('%Y-%m-%d')}_MediaInfo.csv"), 'w') do |f|<br>
+	    # Outputs onto Admin Desktop<br>
+	    f.puts "Name,Master File(gB),MP4(mb),DURATION"<br>
+	      $write_to_csv.each do |line|<br>
+		f.puts(line)<br>
+	      end<br>
+	    end</code></p>
 	<p>You can add or remove extensions after <code>LegalExtensions</code> if you want the script to capture different kinds of files.</p>
 	<p>Change <code>/DESIRED/PATH/TO/CSV/STORAGE/</code> to reflect where you would like the final csv to be saved.</p>
         <p>To run the script, first <code>cd</code> to the folder containing the files you want analyzed. Then run this bash script:</p>
-        <p><code>#!/bin/bash
+        <p><code>#!/bin/bash<br>
 	  ruby /PATH/TO/RUBY/FILE.rb $PWD</code></p> 
     </div>
     </div>
@@ -292,14 +289,14 @@
       <div class="hiding">
 	<p>This script will dive into every folder in a given directory and move all files at all nested levels in that folder up to the top-level folder. It will then delete all hidden files, all empty directories, and four types of files that are created by the VideoAIP program.</p>
 	<p>Be sure to <code>cd</code> to the correct parent directory containing all folders to be unbagged before you run the script.</p>
-	<p><code>#!/bin/bash
-	MainDir="$PWD"
-	for dir in */; do
-	cd "$dir"
-	find . -mindepth 2 -not -path '*/\.*' -type f -exec mv -i '{}' . \;
-	find . -type f -path '*/\.*' -exec rm {} \;
-	find . -depth -type d -empty -exec rmdir {} \;
-	find . -type f \( -name "bag-info.txt" -o -name "bagit.txt" -o -name "manifest-md5.txt" -o -name "tagmanifest-md5.txt" \) -exec rm {} \;
+	<p><code>#!/bin/bash<br>
+	MainDir="$PWD"<br>
+	for dir in */; do<br>
+	cd "$dir"<br>
+	find . -mindepth 2 -not -path '*/\.*' -type f -exec mv -i '{}' . \;<br>
+	find . -type f -path '*/\.*' -exec rm {} \;<br>
+	find . -depth -type d -empty -exec rmdir {} \;<br>
+	find . -type f \( -name "bag-info.txt" -o -name "bagit.txt" -o -name "manifest-md5.txt" -o -name "tagmanifest-md5.txt" \) -exec rm {} \;<br>
 	cd "$MainDir"</code></p>
 	<p>Once the unbagger finishes, you will still have to comb through the files and manually delete anything else that was created along with the AIP. This includes but is not limited to .txt, .xml, and .md5 files.</p>
       </div>
