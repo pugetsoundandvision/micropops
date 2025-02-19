@@ -302,6 +302,7 @@
 	find . -type f \( -name "bag-info.txt" -o -name "bagit.txt" -o -name "manifest-md5.txt" -o -name "tagmanifest-md5.txt" \) -exec rm {} \;
 	cd "$MainDir"</code></p>
 	<p>Once the unbagger finishes, you will still have to comb through the files and manually delete anything else that was created along with the AIP. This includes but is not limited to .txt, .xml, and .md5 files.</p>
+	<p class="link"></p>
       </div>
     </div>
 	
@@ -383,7 +384,7 @@
 	<p>To reverse this command, replace <code>true</code> with <code>false</code>, then run.</p>
       </div>
 
-      <!-- Begins Finding Hidden Files -->
+      <!-- Begins Deleting Hidden Files -->
       <label class="recipe" for="Del_Hide">Deleting hidden files</label>
       <input type="checkbox" id="Del_Hide">
       <div class="hiding">
