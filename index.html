@@ -18,14 +18,13 @@
   <nav class="sidebar well">
     <h2 class="heading">Table of Contents</h2>
     <a href="#about"><div class="contents-list">MIPoPS Microservices</div></a>
-    <a href="#shell"><div class="contents-list">Creating Shell Scripts</div></a>
-    <a href="#move"><div class="contents-list">Moving and Copying Files</div></a>
+    <a href="#shell"><div class="contents-list">Creating shell scripts</div></a>
+    <a href="#move"><div class="contents-list">Moving and copying files</div></a>
     <a href="#rewrap"><div class="contents-list">Rewrap a video</div></a>
     <a href="#transcode"><div class="contents-list">Transcode a video</div></a>
     <a href="#trim"><div class="contents-list">Trim a video</div></a>
-    <a href="#mediainfo"><div class="contents-list">Media info</div></a>
-    <a href="#videoaip"><div class="contents-list">Looping VideoAIP</div></a>
-    <a href="#unbag"><div class="contents-list">Unbag AIPs</div></a>
+    <a href="#mediainfo"><div class="contents-list">CSV of file details</div></a>
+    <a href="#aips"><div class="contents-list">Working with AIPs</div></a>
     <a href="#cronjob"><div class="contents-list">Scheduling Cron Jobs</div></a>
     <a href="#hiddenfiles"><div class="contents-list">Dealing with hidden files</div></a>
     <a href="#LTO_basics"><div class="contents-list">LTO</div></a>
@@ -52,7 +51,7 @@
     </div>
     
     <div class="well">
-      <h2 id="shell">Creating Shell Scripts</h2>
+      <h2 id="shell">Creating shell scripts</h2>
       <label class="recipe" for="shell-scripts">Saving commands as a shell script</label>
       <input type="checkbox" id="shell-scripts">
       <div class="hiding">
@@ -64,7 +63,7 @@
     </div>
 		
     <div class="well">
-      <h2 id="move">Moving and Copying Files</h2>
+      <h2 id="move">Moving and copying files</h2>
 
       <!-- Copy all access files into new directory -->
       <label class="recipe" for="basic-structure">Copy all Access files into a new directory</label>
@@ -141,7 +140,7 @@
     </div>
 
     <div class="well">
-      <h2 id="transcode">Transcode a Video</h2>
+      <h2 id="transcode">Transcode a video</h2>
 
       <!-- Transcode -->
       <label class="recipe" for="MOV_to_MKV">Transcode an MOV to MKV</label>
@@ -260,13 +259,13 @@
         <p><code>#!/bin/bash<br>
 	  ruby /PATH/TO/RUBY/FILE.rb $PWD</code></p> 
     </div>
-    </div>
+      </div>
 		
     <div class="well">
-      <h2 id="videoaip">Run a loop using VideoAIP</h2>
+      <h2 id="aips">Working with AIPs</h2>
     
       <!-- Looping VideoAIP-->
-      <label class="recipe" for="videoaip_loop">Creating a loop with VideoAIP</label>
+      <label class="recipe" for="videoaip_loop">Running a loop using VideoAIP</label>
       <input type="checkbox" id="videoaip_loop">
       <div class="hiding">
         <p>This loop will run VideoAIP on all <strong>.mkvs</strong> in a directory. Instructions for modifying to accept other extensions is presented below.</p>
@@ -277,15 +276,12 @@
 	<p>VideoAIP will try to process any files that it comes across. To ensure VideoAIP only processes the file extensions you've defined, you can replace the last line of the script with:<br>
 	<code>done &lt; &lt;(find /PATH/TO/DIRECTORY -name '*.mkv' -o -name '*.dv' -o -name '*.mov')</code></p>
 	<p>This command will find all .mkv, .dv, and .mov files in the defined directory.</p>
+	<p class="link"></p>
       </div>
-    </div>
-		
-    <div class="well">
-      <h2 id="unbag">Unbag AIPs</h2>
 
     <!-- Unbag AIPs -->
-      <label class="recipe" for="unbag_aips">Unbag AIPs</label>
-      <input type="checkbox" id="unbag_aips">
+      <label class="recipe" for="unbag">Unbag AIPs</label>
+      <input type="checkbox" id="unbag">
       <div class="hiding">
 	<p>This script will dive into every folder in a given directory and move all files at all nested levels in that folder up to the top-level folder. It will then delete all hidden files, all empty directories, and four types of files that are created by the VideoAIP program.</p>
 	<p>Be sure to <code>cd</code> to the correct parent directory containing all folders to be unbagged before you run the script.</p>
@@ -299,6 +295,7 @@
 	find . -type f \( -name "bag-info.txt" -o -name "bagit.txt" -o -name "manifest-md5.txt" -o -name "tagmanifest-md5.txt" \) -exec rm {} \;<br>
 	cd "$MainDir"</code></p>
 	<p>Once the unbagger finishes, you will still have to comb through the files and manually delete anything else that was created along with the AIP. This includes but is not limited to .txt, .xml, and .md5 files.</p>
+	<p class="link"></p>
       </div>
     </div>
 	
