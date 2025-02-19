@@ -189,8 +189,8 @@
       <h2 id="mediainfo">CSV of file details</h2>
     
       <!-- Media Info -->
-      <label class="recipe" for="mediainfo">Create a CSV of file video details</label>
-      <input type="checkbox" id="mediainfo">
+      <label class="recipe" for="mediainfo_csv">Create a CSV of file video details</label>
+      <input type="checkbox" id="mediainfo_csv">
       <div class="hiding">
         <p>This Ruby script generates a csv document listing all the preservation files and their corresponding mp4s in a given folder, along with file sizes and duration.</p>
 	<p>To use, save the below code as an .rb file.</p>
@@ -261,8 +261,7 @@
 	<p>Change <code>/DESIRED/PATH/TO/CSV/STORAGE/</code> to reflect where you would like the final csv to be saved.</p>
         <p>To run the script, first <code>cd</code> to the folder containing the files you want analyzed. Then run this bash script:</p>
         <p><code>#!/bin/bash
-	  ruby /PATH/TO/RUBY/FILE.rb $PWD</code></p>
-        <p class="link"></p>  
+	  ruby /PATH/TO/RUBY/FILE.rb $PWD</code></p> 
     </div>
     </div>
 		
@@ -288,8 +287,8 @@
       <h2 id="unbag">Unbag AIPs</h2>
 
     <!-- Unbag AIPs -->
-      <label class="recipe" for="unbag">Unbag AIPs</label>
-      <input type="checkbox" id="unbag">
+      <label class="recipe" for="unbag_aips">Unbag AIPs</label>
+      <input type="checkbox" id="unbag_aips">
       <div class="hiding">
 	<p>This script will dive into every folder in a given directory and move all files at all nested levels in that folder up to the top-level folder. It will then delete all hidden files, all empty directories, and four types of files that are created by the VideoAIP program.</p>
 	<p>Be sure to <code>cd</code> to the correct parent directory containing all folders to be unbagged before you run the script.</p>
@@ -303,7 +302,6 @@
 	find . -type f \( -name "bag-info.txt" -o -name "bagit.txt" -o -name "manifest-md5.txt" -o -name "tagmanifest-md5.txt" \) -exec rm {} \;
 	cd "$MainDir"</code></p>
 	<p>Once the unbagger finishes, you will still have to comb through the files and manually delete anything else that was created along with the AIP. This includes but is not limited to .txt, .xml, and .md5 files.</p>
-	<p class="link"></p>
       </div>
     </div>
 	
